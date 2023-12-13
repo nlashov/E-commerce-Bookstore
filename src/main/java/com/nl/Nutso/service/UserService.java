@@ -16,23 +16,27 @@ public class UserService {
     private final ApplicationEventPublisher appEventPublisher;
 
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ApplicationEventPublisher applicationEventPublisher) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.appEventPublisher = applicationEventPublisher;
     }
 
-    public void registerUser(
-            UserRegistrationDTO userRegistrationDTO) {
+    public void registerUser(UserRegistrationDTO userRegistrationDTO) {
 
         userRepository.save(map(userRegistrationDTO));
 
-        appEventPublisher.publishEvent(new UserRegisteredEvent("UserService", userRegistrationDTO.email()));
+        appEventPublisher.publishEvent(new UserRegisteredEvent(
+                "UserService",
+                userRegistrationDTO.email(),
+                userRegistrationDTO.fullName()));
     }
 
     private UserEntity map(UserRegistrationDTO userRegistrationDTO) {
         return new UserEntity()
-                .setActive(true)
+                .setActive(false)
                 .setFirstName(userRegistrationDTO.firstName())
                 .setLastName(userRegistrationDTO.lastName())
                 .setEmail(userRegistrationDTO.email())
