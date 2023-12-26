@@ -19,3 +19,12 @@ logging:
     org.hibernate.orm.jdbc.bind: TRACE
     org.springframework.security: TRACE
 
+
+mail:
+  Nutso: "Nutso@test.com"
+  host: localhost
+  port: 1025
+  username: ${MAIL_USER:Nutso}
+  password: ${MAIL_PASSWORD:12345}
+
+
