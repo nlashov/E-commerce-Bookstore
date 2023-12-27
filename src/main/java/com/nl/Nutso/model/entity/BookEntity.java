@@ -10,11 +10,19 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.JdbcTypeCode;
+
 import java.math.BigDecimal;
+import java.sql.Types;
+import java.util.UUID;
 
 @Entity
 @Table(name = "books")
 public class BookEntity extends BaseEntity {
+
+    @NotNull
+    @JdbcTypeCode(Types.VARCHAR)
+    private UUID uuid;
 
     @NotNull
     private String title;
@@ -66,6 +74,15 @@ public class BookEntity extends BaseEntity {
 
     public BookEntity setPrice(BigDecimal price) {
         this.price = price;
+        return this;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public BookEntity setUuid(UUID uuid) {
+        this.uuid = uuid;
         return this;
     }
 

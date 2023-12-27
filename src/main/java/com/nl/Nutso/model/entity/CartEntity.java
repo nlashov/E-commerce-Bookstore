@@ -1,4 +1,7 @@
 package com.nl.Nutso.model.entity;
 
-public class CartEntity {
+import jakarta.persistence.Entity;
+
+@Entity
+public class CartEntity extends BaseEntity{
 }
