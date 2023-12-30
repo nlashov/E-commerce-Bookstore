@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head}">
+</head>
+
+<body>
+
+<div>
+    <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+
+<div class="container-fluid">
+    <h2 class="text-center text-white mt-5">Details</h2>
+    <div th:object="${book}" class="books row mx-auto d-flex flex-row justify-content-center">
+        <div class="book card col-sm-2 col-md-3  col-lg-4 m-1 p-0" >
+
+            <div class="card-body pb-1">
+                <h5 class="card-title" th:text="*{summary()}"></h5>
+            </div>
+            <ul class="book-details list-group list-group-flush">
+                <li class="list-group-item">
+
+                    <div class="card-text">
+                        <span>• Price:</span>
+                        <th:block th:text="*{price}">123</th:block>
+                    </div>
+                    <div class="card-text">
+                        <span>• Category:</span>
+                        <th:block th:text="*{category}">Category</th:block>
+                    </div>
+                    <div class="card-text">
+                        <span>• Condition:</span>
+                        <th:block th:text="*{bookCondition}">Condition</th:block>
+                    </div>
+
+                    <div class="card-text">
+                        <span>• Additional Information:</span>
+                        <th:block th:text="*{additionalInfo}">add Info</th:block>
+                    </div>
+
+                    <div class="card-text"><span>• Offer created - TODO</span></div>
+                    <div class="card-text"><span>• Offer modified - TODO</span></div>
+                    <div class="card-text"><span>• Seller - TOD</span></div>
+                </li>
+            </ul>
+            <div class="card-body" sec:authorize="isAuthenticated()">
+                <form th:method="delete"
+                      th:action="@{/books/{bookUUID}(bookUUID=*{uuid})}">
+                    <input type="submit" value="Delete" class="link card-link"/>
+                </form>
+            </div>
+        </div>
+        <div class="book card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
+            <img th:src="*{imageUrl}" class="card-img-top"  alt="no image">
+        </div>
+    </div>
+</div>
+
+<div>
+    <footer> </footer>
+</div>
+
+</body>
+</html>

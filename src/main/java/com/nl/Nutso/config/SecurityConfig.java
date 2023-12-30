@@ -5,6 +5,7 @@ import com.nl.Nutso.service.NutsoUserDetailsService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,9 @@ public class SecurityConfig {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         // Allow anyone to see the home page, the registration page and the login form
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
+                        .requestMatchers("/books/all").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         // all other requests are authenticated.
                         .anyRequest().authenticated()
         ).formLogin(

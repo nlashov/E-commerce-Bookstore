@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface BookRepository extends JpaRepository {
-Optional<BookEntity> findBookById(Long id);
-void deleteById(Long id);
+public interface BookRepository extends JpaRepository<BookEntity, Long> {
+Optional<BookEntity> findBookByUuid(UUID uuid);
+void deleteByUuid(UUID uuid);
 }

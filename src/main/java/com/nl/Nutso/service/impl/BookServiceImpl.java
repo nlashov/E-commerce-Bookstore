@@ -4,6 +4,8 @@ import com.nl.Nutso.model.dto.AddBookDTO;
 import com.nl.Nutso.model.dto.BookDetailDTO;
 import com.nl.Nutso.model.dto.BookSummaryDTO;
 import com.nl.Nutso.model.entity.BookEntity;
+import com.nl.Nutso.model.enums.BookConditionEnum;
+import com.nl.Nutso.model.enums.CategoryEnum;
 import com.nl.Nutso.repository.BookRepository;
 import com.nl.Nutso.service.BookService;
 import jakarta.transaction.Transactional;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,35 +29,64 @@ public class BookServiceImpl implements BookService {
     @Override
     public UUID addBook(AddBookDTO addBookDTO) {
         BookEntity newBook = map(addBookDTO);
-        bookRepository.save(newBook);
+        newBook = bookRepository.save(newBook);
         return newBook.getUuid();
     }
 
     @Override
     public Page<BookSummaryDTO> getAllBooks(Pageable pageable) {
-        return null;
+        return bookRepository
+                .findAll(pageable)
+                .map(BookServiceImpl::mapAsSummary);
     }
 
     @Override
     public Optional<BookDetailDTO> getBookDetail(UUID bookUuid) {
-        return Optional.empty();
+        return bookRepository.findBookByUuid(bookUuid).map(BookServiceImpl::mapAsDetail);
     }
+
 
     @Override
     @Transactional
     public void deleteBook(UUID bookUuid) {
-        bookRepository.deleteById(bookUuid);
+        bookRepository.deleteByUuid(bookUuid);
     }
 
     public static BookEntity map(AddBookDTO addBookDTO) {
         return new BookEntity()
+                .setUuid(UUID.randomUUID())
                 .setTitle(addBookDTO.title())
                 .setAuthor(addBookDTO.author())
                 .setPrice(addBookDTO.price())
-                .setCondition(addBookDTO.condition())
+                .setBookCondition(addBookDTO.bookCondition())
                 .setAdditionalInfo(addBookDTO.additionalInfo())
                 .setCategory(addBookDTO.category())
                 .setYear(addBookDTO.year())
                 .setImageUrl(addBookDTO.imageUrl());
     }
+
+    private static BookDetailDTO mapAsDetail(BookEntity bookEntity) {
+        return new BookDetailDTO(
+                bookEntity.getUuid().toString(),
+                bookEntity.getTitle(),
+                bookEntity.getAuthor(),
+                bookEntity.getPrice(),
+                bookEntity.getBookCondition(),
+                bookEntity.getAdditionalInfo(),
+                bookEntity.getCategory(),
+                bookEntity.getYear(),
+                bookEntity.getImageUrl());
+
+    }
+
+    private static BookSummaryDTO mapAsSummary(BookEntity bookEntity) {
+        return new BookSummaryDTO(
+                bookEntity.getUuid().toString(),
+                bookEntity.getTitle(),
+                bookEntity.getAuthor(),
+                bookEntity.getPrice(),
+                bookEntity.getImageUrl());
+    }
+
+
 }

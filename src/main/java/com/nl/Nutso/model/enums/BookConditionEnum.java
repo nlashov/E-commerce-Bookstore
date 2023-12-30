@@ -1,7 +1,7 @@
 package com.nl.Nutso.model.enums;
 
-public enum ConditionEnum {
-    POOR,
+public enum BookConditionEnum {
+    BAD,
     GOOD,
     VERYGOOD,
     EXCELLENT

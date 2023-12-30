@@ -1,7 +1,7 @@
 package com.nl.Nutso.model.entity;
 
+import com.nl.Nutso.model.enums.BookConditionEnum;
 import com.nl.Nutso.model.enums.CategoryEnum;
-import com.nl.Nutso.model.enums.ConditionEnum;
 import com.nl.Nutso.model.validation.YearNotInFuture;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -33,22 +33,40 @@ public class BookEntity extends BaseEntity {
     @NotNull
     private BigDecimal price;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private ConditionEnum condition;
-
     private String additionalInfo;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private CategoryEnum category;
 
-    @Min(1930)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private BookConditionEnum bookCondition;
+
+    public BookConditionEnum getBookCondition() {
+        return bookCondition;
+    }
+
+    public BookEntity setBookCondition(BookConditionEnum bookCondition) {
+        this.bookCondition = bookCondition;
+        return this;
+    }
+
+
     @YearNotInFuture
     private int year;
 
     @NotEmpty
     private String imageUrl;
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public BookEntity setUuid(UUID uuid) {
+        this.uuid = uuid;
+        return this;
+    }
 
     public String getTitle() {
         return title;
@@ -77,24 +95,6 @@ public class BookEntity extends BaseEntity {
         return this;
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public BookEntity setUuid(UUID uuid) {
-        this.uuid = uuid;
-        return this;
-    }
-
-    public ConditionEnum getCondition() {
-        return condition;
-    }
-
-    public BookEntity setCondition(ConditionEnum condition) {
-        this.condition = condition;
-        return this;
-    }
-
     public String getAdditionalInfo() {
         return additionalInfo;
     }
@@ -103,6 +103,8 @@ public class BookEntity extends BaseEntity {
         this.additionalInfo = additionalInfo;
         return this;
     }
+
+
 
     public CategoryEnum getCategory() {
         return category;
