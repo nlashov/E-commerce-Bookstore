@@ -83,9 +83,13 @@ public class BookController {
                       ) Pageable pageable,
                       @ModelAttribute("searchBookModel") SearchBookDTO searchBookDTO) {
 
-
-        Page<BookSummaryDTO> allBooks = bookService.getAllBooks(pageable);
-        model.addAttribute("books", allBooks);
+        if (searchBookDTO != null && !searchBookDTO.isEmpty()) {
+            Page<BookSummaryDTO> searchResults = bookService.searchBooks(searchBookDTO, pageable);
+            model.addAttribute("books", searchResults);
+        } else {
+            Page<BookSummaryDTO> allBooks = bookService.getAllBooks(pageable);
+            model.addAttribute("books", allBooks);
+        }
 
         return "books";
     }
@@ -102,7 +106,11 @@ public class BookController {
     @GetMapping("/search")
     public String searchQuery(@Valid SearchBookDTO searchBookDTO,
                               BindingResult bindingResult,
-                              Model model) {
+                              Model model,
+                              @PageableDefault(
+                                      size = 10,
+                                      sort = "title"
+                              ) Pageable pageable) {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("searchBookModel", searchBookDTO);
@@ -117,10 +125,10 @@ public class BookController {
         }
 
         if (!searchBookDTO.isEmpty()) {
-            model.addAttribute("books", bookService.searchBooks(searchBookDTO));
+            model.addAttribute("books", bookService.searchBooks(searchBookDTO, pageable));
         }
 
-        return "books-search";
+        return "books";
     }
 
 

@@ -53,12 +53,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDetailDTO> searchBooks(SearchBookDTO searchBookDTO) {
-        List<BookEntity> books = bookRepository.findAll(BookSpecification.withTitleAndAuthor(searchBookDTO));
+    public Page<BookSummaryDTO> searchBooks(SearchBookDTO searchBookDTO, Pageable pageable) {
+        Page<BookEntity> booksPage = bookRepository.findAll(BookSpecification.withTitleAndAuthor(searchBookDTO), pageable);
 
-        return books.stream()
-                .map(BookServiceImpl::mapAsDetail)
-                .collect(Collectors.toList());
+        return booksPage.map(BookServiceImpl::mapAsSummary);
     }
 
 

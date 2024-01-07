@@ -11,6 +11,20 @@
 
 <div class="container-fluid">
     <h2 class="text-center text-white mt-5 mb-5">Последно добавени книги</h2>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <form th:method="GET" th:action="@{/books/search}" th:object="${searchBookModel}">
+                <div class="input-group">
+                    <input th:field="*{query}" class="form-control" type="search" placeholder="Search by title or author" aria-label="Search" id="query">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="books row mx-auto d-flex flex-row justify-content-center" style="border: 2px solid white;">
         <div
                 th:each="book: ${books.getContent()}"

@@ -23,6 +23,6 @@ public interface BookService {
 
     void deleteBook(UUID bookId);
 
-    List<BookDetailDTO> searchBooks(SearchBookDTO bookSearchDTO);
+    Page<BookSummaryDTO> searchBooks(SearchBookDTO searchBookDTO, Pageable pageable);
 
 }
