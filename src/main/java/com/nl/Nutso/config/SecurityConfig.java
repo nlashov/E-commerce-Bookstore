@@ -1,11 +1,14 @@
 package com.nl.Nutso.config;
 
+import com.nl.Nutso.model.enums.UserRoleEnum;
 import com.nl.Nutso.repository.UserRepository;
 import com.nl.Nutso.service.NutsoUserDetailsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +16,15 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
+
+    private final String rememberMeKey;
+
+    public SecurityConfig(@Value("${Nutso.remember.me.key}")
+                                  String rememberMeKey) {
+        this.rememberMeKey = rememberMeKey;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -26,6 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
                         .requestMatchers("/books/all").permitAll()
                         .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/books/**").hasRole(UserRoleEnum.ADMIN.name())
                         .requestMatchers("/error").permitAll()
                         // all other requests are authenticated.
                         .anyRequest().authenticated()
@@ -51,6 +63,13 @@ public class SecurityConfig {
                             // invalidate the HTTP session
                             .invalidateHttpSession(true);
                 }
+        ).rememberMe(
+                rememberMe -> {
+                    rememberMe
+                            .key(rememberMeKey)
+                            .rememberMeParameter("rememberme")
+                            .rememberMeCookieName("rememberme");
+                }
         ).build();
     }
 
@@ -65,4 +84,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
+
+
 }

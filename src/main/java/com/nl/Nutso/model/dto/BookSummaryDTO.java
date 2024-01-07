@@ -9,4 +9,6 @@ public record BookSummaryDTO(
         String author,
         BigDecimal price,
         String imageUrl) {
+
+
 }

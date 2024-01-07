@@ -8,16 +8,24 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 #
 #  sql:
 #    init:
 #      mode: always
 
-logging:
-  level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.orm.jdbc.bind: TRACE
-    org.springframework.security: TRACE
+Nutso:
+  default.admin.pass: 12345
+  remember.me.key: 12345
+
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.orm.jdbc.bind: TRACE
+#    org.springframework.security: TRACE
 
 
 mail:

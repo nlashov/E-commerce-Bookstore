@@ -2,6 +2,7 @@ package com.nl.Nutso.web;
 
 import com.nl.Nutso.model.dto.AddBookDTO;
 import com.nl.Nutso.model.dto.BookDetailDTO;
+import com.nl.Nutso.model.dto.SearchBookDTO;
 import com.nl.Nutso.model.dto.BookSummaryDTO;
 import com.nl.Nutso.model.enums.CategoryEnum;
 import com.nl.Nutso.service.BookService;
@@ -16,8 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Controller
@@ -38,7 +37,6 @@ public class BookController {
     @GetMapping("/add")
     public String add(Model model) {
 
-        //TODO check if that's needed
         if (!model.containsAttribute("addBookDTO")) {
             model.addAttribute("addBookDTO", AddBookDTO.empty());
         }
@@ -52,6 +50,7 @@ public class BookController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
 
+        //TODO check when trying to add with error
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addBookDTO", addBookDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBookDTO", bindingResult);
@@ -79,14 +78,49 @@ public class BookController {
     @GetMapping("/all")
     public String all(Model model,
                       @PageableDefault(
-                              size = 6,
+                              size = 10,
                               sort = "title"
-                      ) Pageable pageable) {
+                      ) Pageable pageable,
+                      @ModelAttribute("searchBookModel") SearchBookDTO searchBookDTO) {
+
 
         Page<BookSummaryDTO> allBooks = bookService.getAllBooks(pageable);
         model.addAttribute("books", allBooks);
 
         return "books";
+    }
+
+
+    @DeleteMapping("/{uuid}")
+    public String delete(@PathVariable("uuid") UUID uuid) {
+
+        bookService.deleteBook(uuid);
+
+        return "redirect:/books/all";
+    }
+
+    @GetMapping("/search")
+    public String searchQuery(@Valid SearchBookDTO searchBookDTO,
+                              BindingResult bindingResult,
+                              Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("searchBookModel", searchBookDTO);
+            model.addAttribute(
+                    "org.springframework.validation.BindingResult.searchBookModel",
+                    bindingResult);
+            return "books-search";
+        }
+
+        if (!model.containsAttribute("searchBookModel")) {
+            model.addAttribute("searchBookModel", searchBookDTO);
+        }
+
+        if (!searchBookDTO.isEmpty()) {
+            model.addAttribute("books", bookService.searchBooks(searchBookDTO));
+        }
+
+        return "books-search";
     }
 
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="~{/fragments/head}">Head</th:block>
+
+<body>
+<div th:replace="~{fragments/navbar.html}">Navbar</div>
+
+
+<div class="container">
+    <div class="row">
+        <h2>Books</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="product-box position relative">
+                <div class="icons">
+                    <a href="#" class="text-decoration-none text-dark"><i class="fas fa-heart"></i></a>
+                    <a href="#" class="text-decoration-none text-dark"><i class="fas fa-eye"></i></a>
+                </div>
+
+                <img src="https://knigoman.bg/books/2303523254_1760881240947.jpg" href="" alt="no image pic" class="img-fluid">
+                <div class="cart-btn">
+                    <button class="btn btn-white shadow-sm rounded-pull"><i class="fal fa-shopping-cart"></i>Add to
+                        cart
+                    </button>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-name">
+                    <h3>Преспанските камбани</h3>
+                </div>
+                <div class="product-price">
+                    <span>30лв</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

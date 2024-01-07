@@ -1,10 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet");
 body {
      background-image: url('/images/background.jpg');
+     background-image: opacity: .2;
      background-position: center center;
      background-repeat: no-repeat;
      background-attachment: fixed;
      background-size: cover;
-     background-color: #464646;
+     background-color: rgba(255, 255, 255, 0.5);
+     font-family: 'PT Sans', sans-serif;
+     display: flex;
+     align items: center;
+     min-height: 100vh;
+
  }
 
 .navbar .logo {
@@ -14,6 +21,10 @@ body {
 
 .container, .container-fluid {
      padding-top: 90px;
+     padding-left: 70px;
+     padding-right: 70px
+     background-color: rgba(255, 255, 255, 0.5)
+
 }
 
 .bg-text {
@@ -40,8 +51,16 @@ td, th {
      background-image: linear-gradient(to bottom right, rgba(220, 220, 220, 0.9), rgba(255, 255, 255, 0.9));
 }
 .card-img-top-wrapper {
-     height: 150px;
-     overflow:hidden;
+     height: 250px;
+     overflow:auto;
+}
+
+.book-image {
+    width:180px;
+    height:270px;
+    object-fit: cover;
+    border: 2px solid white;
+    border-radius: 6px;
 }
 
 form.main-form {

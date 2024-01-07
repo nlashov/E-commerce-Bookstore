@@ -28,6 +28,12 @@ public class UserEntity extends BaseEntity {
 
     private boolean active;
 
+    @OneToMany(mappedBy = "user")
+    private List<OrderEntity> orders;
+
+    @OneToMany(mappedBy = "user")
+    private List<CartEntity> cart;
+
     public String getEmail() {
         return email;
     }
@@ -79,6 +85,15 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity setRoles(List<UserRoleEntity> roles) {
         this.roles = roles;
+        return this;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public UserEntity setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
         return this;
     }
 }

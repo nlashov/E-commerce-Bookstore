@@ -3,7 +3,8 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{fragments/head}">
+<head
+        th:replace="~{fragments/head}">
 </head>
 
 <body>
@@ -32,7 +33,7 @@
                         <th:block th:text="*{category}">Category</th:block>
                     </div>
                     <div class="card-text">
-                        <span>• Condition:</span>
+                        <span>• Състояние:</span>
                         <th:block th:text="*{bookCondition}">Condition</th:block>
                     </div>
 
@@ -46,8 +47,8 @@
                     <div class="card-text"><span>• Seller - TOD</span></div>
                 </li>
             </ul>
-            <div class="card-body" sec:authorize="isAuthenticated()">
-                <form th:method="delete"
+            <div class="card-body" >
+                <form th:method="DELETE"
                       th:action="@{/books/{bookUUID}(bookUUID=*{uuid})}">
                     <input type="submit" value="Delete" class="link card-link"/>
                 </form>
@@ -59,9 +60,7 @@
     </div>
 </div>
 
-<div>
-    <footer> </footer>
-</div>
+<div th:replace="~{fragments/footer.html}">Footer</div>
 
 </body>
 </html>

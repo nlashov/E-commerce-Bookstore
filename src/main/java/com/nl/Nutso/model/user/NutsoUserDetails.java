@@ -14,6 +14,8 @@ public class NutsoUserDetails implements UserDetails {
     private final String lastName;
     private final Collection<GrantedAuthority> authorities;
 
+
+
     public NutsoUserDetails(Long id, String password, String username, String firstName, String lastName, Collection<GrantedAuthority> authorities) {
         this.id = id;
         this.password = password;
