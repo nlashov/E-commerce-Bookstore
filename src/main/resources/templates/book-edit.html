@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="~{/fragments/head}">Head</th:block>
+
+<body>
+<div th:replace="~{fragments/navbar.html}">Navbar</div>
+
+
+<div class="container">
+    <h2 class="text-center text-white">Актуализирай данни по книга</h2>
+    <form th:action="@{/books/{bookUUID}/edit(bookUUID=*{uuid})}" th:object="${book}" th:method="PATCH">
+        <div class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+            <div class="row">
+
+                <!-- title -->
+                <div class="form-group col-md-6 mb-3">
+                    <label class="text-center text-white font-weight-bold" for="titleId">Заглавие</label>
+                    <input id="titleId"
+                           th:field="*{title}"
+                           type="text"
+                           class="form-control"
+                           placeholder=""/>
+                </div>
+                <!-- EO: title -->
+
+                <!-- author -->
+                <div class="form-group col-md-6 mb-3">
+                    <label class="text-center text-white font-weight-bold" for="authorId">Автор</label>
+                    <input id="authorId"
+                           th:field="*{author}"
+                           type="text"
+                           class="form-control"
+                           placeholder=""/>
+                </div>
+                <!-- EO: author -->
+            </div>
+
+            <div class="row">
+
+                <!-- Price -->
+                <div class="form-group col-md-6 mb-3">
+                    <label for="price" class="text-white font-weight-bold">Цена</label>
+                    <input id="price"
+                           th:field="*{price}"
+                           type="number"
+                           class="form-control"
+                           placeholder=""/>
+                </div>
+                <!-- EO: Price -->
+
+                <!-- Year -->
+                <div class="form-group col-md-6 mb-3">
+                    <label for="year" class="text-white font-weight-bold">Година</label>
+                    <input id="year"
+                           th:field="*{year}"
+                           type="number"
+                           class="form-control"
+                           placeholder=""/>
+<!--                    <p th:if="${#fields.hasErrors('year')}"-->
+<!--                       class="errors alert alert-danger"-->
+<!--                       th:errors="*{year}">-->
+
+                                                        <p class="invalid-feedback errors alert alert-danger">
+                                                           Годината не може да бъде в бъдещето
+                                                        </p>
+                    </p>
+                </div>
+                <!-- EO: Year -->
+            </div>
+
+
+            <div class="row">
+                <!-- Category -->
+                <div class="form-group col-md-6 mb-3">
+                    <label class="text-center text-white font-weight-bold" for="category">Категория</label>
+                    <select id="category"
+                            th:field="*{category}"
+                            class="form-control">
+                        <option value="">- Избери категория -</option>
+                        <option th:each="c : ${categories}"
+                                th:text="${c}"
+                                th:value="${c}">
+                        </option>
+                    </select>
+                </div>
+                <!-- EO: Category -->
+
+                <!-- Condition -->
+                <div class="form-group col-md-6 mb-3">
+                    <label class="text-center text-white font-weight-bold" for="bookCondition">Състояние</label>
+                    <select
+                            id="bookCondition"
+                            th:field="*{bookCondition}"
+                            class="form-control">
+                        <option value="">- Избери състояние -</option>
+                        <option th:each="c : ${T(com.nl.Nutso.model.enums.BookConditionEnum).values()}"
+                                th:text="${c}"
+                                th:value="${c}"
+                                th:selected="${c} == *{bookCondition}">
+                        </option>
+                    </select>
+                </div>
+                <!-- EO: Condition -->
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label class="text-white font-weight-bold" for="additionalInfo">Допълнителна информация</label>
+                <textarea id="additionalInfo"
+                          th:field="*{additionalInfo}"
+                          type="textarea"
+                          class="form-control"
+                          rows="3"
+                          placeholder="">
+            </textarea>
+            </div>
+            <!-- EO: Description -->
+
+            <!-- Image URL -->
+            <div class="form-group">
+                <label class="text-white font-weight-bold" for="imageUrl">Снимка</label>
+                <input id="imageUrl"
+                       th:field="*{imageUrl}"
+                       type="url" class="form-control"
+                       placeholder="">
+            </div>
+            <!-- EO: Image URL -->
+
+            <div class="row">
+                <div class="col col-md-4">
+                    <div class="button-holder d-flex">
+                        <input type="submit" class="btn btn-secondary" value="Промени"/>
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer.html}">Footer</div>
+
+</body>
+</html>

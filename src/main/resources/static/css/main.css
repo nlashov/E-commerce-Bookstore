@@ -20,12 +20,69 @@ body {
 }
 
 .container, .container-fluid {
-     padding-top: 90px;
-     padding-left: 70px;
-     padding-right: 70px
-     background-color: rgba(255, 255, 255, 0.5)
+    padding-top: 90px;
+    padding-left: 70px;
+    padding-right: 70px;
+    border-radius: 8px;
+    border-color: white;
+
 
 }
+
+.books-container {
+    background-color: #f8f9fa; /* light gray background */
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.sidebar {
+    padding-top: 90px;
+    background-color: #331300 /* light gray background */
+    border-right: 1px solid #e0e0e0; /* light border */
+    padding: 15px;
+}
+
+.books-container-opacity {
+    opacity: 0.7;
+}
+
+.sidebar h4 {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.list-group-item a {
+    color: #555;
+    text-decoration: none;
+}
+
+.list-group-item a:hover {
+    text-decoration: underline;
+}
+
+.list-group {
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    border-radius: 20px; /* rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* subtle shadow */
+}
+
+.btn-outline-secondary {
+    border-radius: 20px;
+}
+
+.list-group-item:hover {
+    background-color: #e0e0e0; /* light background on hover */
+}
+
 
 .bg-text {
      background-color: rgb(0,0,0); /* Fallback color */

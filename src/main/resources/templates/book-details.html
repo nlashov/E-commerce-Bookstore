@@ -50,7 +50,11 @@
             <div class="card-body" >
                 <form th:method="DELETE"
                       th:action="@{/books/{bookUUID}(bookUUID=*{uuid})}">
-                    <input type="submit" value="Delete" class="link card-link"/>
+                    <input type="submit" value="Изтрий" class="link card-link"/>
+                </form>
+                <form th:method="GET"
+                      th:action="@{/books/{bookUUID}/edit(bookUUID=*{uuid})}">
+                    <input type="submit" value="Промени" class="link card-link"/>
                 </form>
             </div>
         </div>

@@ -5,6 +5,7 @@ import com.nl.Nutso.model.dto.BookDetailDTO;
 import com.nl.Nutso.model.dto.SearchBookDTO;
 import com.nl.Nutso.model.dto.BookSummaryDTO;
 import com.nl.Nutso.model.entity.BookEntity;
+import com.nl.Nutso.model.enums.CategoryEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,8 +22,13 @@ public interface BookService {
 
     Optional<BookDetailDTO> getBookDetail(UUID bookUuid);
 
+    void updateBook(UUID bookUuid, BookDetailDTO bookDetailDTO);
+
     void deleteBook(UUID bookId);
 
     Page<BookSummaryDTO> searchBooks(SearchBookDTO searchBookDTO, Pageable pageable);
+
+    Page<BookSummaryDTO> getBooksByCategory(CategoryEnum category, Pageable pageable);
+
 
 }

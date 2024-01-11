@@ -10,7 +10,7 @@
 
 
 <div class="container">
-    <h2 class="text-center text-white">Add book</h2>
+    <h2 class="text-center text-white">Добави книга</h2>
     <form th:method="POST"
           th:action="@{/books/add}"
           th:object="${addBookDTO}"
@@ -19,30 +19,30 @@
 
             <!-- title -->
             <div class="form-group col-md-6 mb-3">
-                <label class="text-center text-white font-weight-bold" for="titleId">Title</label>
+                <label class="text-center text-white font-weight-bold" for="titleId">Заглавие</label>
                 <input id="titleId"
                        th:field="*{title}"
                        th:errorclass="is-invalid"
                        type="text"
                        class="form-control"
-                       placeholder="Book title"/>
+                       placeholder=""/>
                 <p class="invalid-feedback errors alert alert-danger">
-                    Title is required.
+                    Полето е задължително!
                 </p>
             </div>
             <!-- EO: title -->
 
             <!-- author -->
             <div class="form-group col-md-6 mb-3">
-                <label class="text-center text-white font-weight-bold" for="authorId">Author</label>
+                <label class="text-center text-white font-weight-bold" for="authorId">Автор</label>
                 <input id="authorId"
                        th:field="*{author}"
                        th:errorclass="is-invalid"
                        type="text"
                        class="form-control"
-                       placeholder="Book author"/>
+                       placeholder=""/>
                 <p class="invalid-feedback errors alert alert-danger">
-                    Author is required.
+                    Полето е задължително!
                 </p>
             </div>
             <!-- EO: author -->
@@ -54,28 +54,28 @@
 
             <!-- Price -->
             <div class="form-group col-md-6 mb-3">
-                <label for="price" class="text-white font-weight-bold">Price</label>
+                <label for="price" class="text-white font-weight-bold">Цена</label>
                 <input id="price"
                        th:field="*{price}"
                        th:errorclass="is-invalid"
                        type="number"
                        class="form-control"
-                       placeholder="Suggested price"/>
+                       placeholder=""/>
                 <p class="invalid-feedback errors alert alert-danger">
-                    Suggested price is required.
+                    Полето е задължително!
                 </p>
             </div>
             <!-- EO: Price -->
 
             <!-- Year -->
             <div class="form-group col-md-6 mb-3">
-                <label for="year" class="text-white font-weight-bold">Year</label>
+                <label for="year" class="text-white font-weight-bold">Година</label>
                 <input id="year"
                        th:errorclass="is-invalid"
                        th:field="*{year}"
                        type="number"
                        class="form-control"
-                       placeholder="Publishing year"/>
+                       placeholder=""/>
                 <p th:if="${#fields.hasErrors('year')}"
                    class="errors alert alert-danger"
                    th:errors="*{year}">
@@ -92,32 +92,32 @@
         <div class="row">
             <!-- Category -->
             <div class="form-group col-md-6 mb-3">
-                <label class="text-center text-white font-weight-bold" for="category">Category</label>
+                <label class="text-center text-white font-weight-bold" for="category">Категория</label>
                 <select id="category"
                         th:field="*{category}"
                         th:errorclass="is-invalid"
                         class="form-control">
-                    <option value="">- Select a category -</option>
+                    <option value="">- Избери категория -</option>
                     <option th:each="c : ${categories}"
                             th:text="${c}"
                             th:value="${c}">
                     </option>
                 </select>
                 <p class="invalid-feedback errors alert alert-danger">
-                    Category is required.
+                    Полето е задължително!
                 </p>
             </div>
             <!-- EO: Category -->
 
             <!-- Condition -->
             <div class="form-group col-md-6 mb-3">
-                <label class="text-center text-white font-weight-bold" for="bookCondition">Condition</label>
+                <label class="text-center text-white font-weight-bold" for="bookCondition">Състояние</label>
                 <select
                         id="bookCondition"
                         th:field="*{bookCondition}"
                         th:errorclass="is-invalid"
                         class="form-control">
-                    <option value="">- Select condition -</option>
+                    <option value="">- Избери състояние -</option>
                     <option th:each="c : ${T(com.nl.Nutso.model.enums.BookConditionEnum).values()}"
                             th:text="${c}"
                             th:value="${c}"
@@ -125,7 +125,7 @@
                     </option>
                 </select>
                 <p class="invalid-feedback  errors alert alert-danger">
-                    Condition is required.
+                    Полето е задължително!
                 </p>
             </div>
             <!-- EO: Condition -->
@@ -133,31 +133,31 @@
 
         <!-- Description -->
         <div class="form-group">
-            <label class="text-white font-weight-bold" for="additionalInfo">Additional Information</label>
+            <label class="text-white font-weight-bold" for="additionalInfo">Допълнителна информация</label>
             <textarea id="additionalInfo"
                       th:field="*{additionalInfo}"
                       th:errorclass="is-invalid"
                       type="textarea"
                       class="form-control"
                       rows="3"
-                      placeholder="Description">
+                      placeholder="">
             </textarea>
             <p class="invalid-feedback errors alert alert-danger">
-                Description is required.
+                Полето е задължително!
             </p>
         </div>
         <!-- EO: Description -->
 
         <!-- Image URL -->
         <div class="form-group">
-            <label class="text-white font-weight-bold" for="imageUrl">Image URL</label>
+            <label class="text-white font-weight-bold" for="imageUrl">Снимка</label>
             <input id="imageUrl"
                    th:field="*{imageUrl}"
                    th:errorclass="is-invalid"
                    type="url" class="form-control"
-                   placeholder="Put vehicle image URL here">
+                   placeholder="">
             <p class="invalid-feedback errors alert alert-danger">
-                Vehicle image URL is required.
+                Снимката е задължителна.
             </p>
         </div>
         <!-- EO: Image URL -->

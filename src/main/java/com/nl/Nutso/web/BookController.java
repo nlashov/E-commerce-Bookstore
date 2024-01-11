@@ -64,36 +64,40 @@ public class BookController {
     }
 
     @GetMapping("/{uuid}")
-    public String details(@PathVariable("uuid") UUID uuid, Model model) {
+    public String details(@PathVariable("uuid") UUID uuid,
+                          Model model) {
 
         BookDetailDTO bookDetailDTO = bookService
                 .getBookDetail(uuid)
-                .orElseThrow(() -> new ObjectNotFoundException("Book with uuid " + uuid + " not found!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Book with id " + uuid + " not found!"));
 
         model.addAttribute("book", bookDetailDTO);
 
         return "book-details";
     }
 
-    @GetMapping("/all")
-    public String all(Model model,
-                      @PageableDefault(
-                              size = 10,
-                              sort = "title"
-                      ) Pageable pageable,
-                      @ModelAttribute("searchBookModel") SearchBookDTO searchBookDTO) {
+    @GetMapping("{uuid}/edit")
+    public String editBook(@PathVariable("uuid") UUID uuid,
+                           Model model) {
+        BookDetailDTO bookDetailDTO = bookService.getBookDetail(uuid).
+                orElseThrow(() -> new ObjectNotFoundException("Book with id "+ uuid + "not found"));
 
-        if (searchBookDTO != null && !searchBookDTO.isEmpty()) {
-            Page<BookSummaryDTO> searchResults = bookService.searchBooks(searchBookDTO, pageable);
-            model.addAttribute("books", searchResults);
-        } else {
-            Page<BookSummaryDTO> allBooks = bookService.getAllBooks(pageable);
-            model.addAttribute("books", allBooks);
-        }
+        System.out.println(bookDetailDTO.price());
 
-        return "books";
+        model.addAttribute("book", bookDetailDTO);
+
+        return "book-edit";
     }
 
+    @PatchMapping("/{uuid}/edit")
+    public String updateBook(@PathVariable("uuid") UUID uuid,
+                             @ModelAttribute("book") BookDetailDTO bookDetailDTO) {
+
+
+        // Update the book using the service method
+        bookService.updateBook(uuid, bookDetailDTO);
+        return "redirect:/books/" + uuid;
+    }
 
     @DeleteMapping("/{uuid}")
     public String delete(@PathVariable("uuid") UUID uuid) {
@@ -102,6 +106,33 @@ public class BookController {
 
         return "redirect:/books/all";
     }
+
+
+    @GetMapping("/all")
+    public String all(Model model,
+                      @PageableDefault(
+                              size = 10,
+                              sort = "title"
+                      ) Pageable pageable,
+                      @ModelAttribute("searchBookModel") SearchBookDTO searchBookDTO,
+                      @RequestParam(name = "category", required = false) CategoryEnum category) {
+
+        if (searchBookDTO != null && !searchBookDTO.isEmpty()) {
+            Page<BookSummaryDTO> searchResults = bookService.searchBooks(searchBookDTO, pageable);
+            model.addAttribute("books", searchResults);
+
+        } else if (category != null) {
+            Page<BookSummaryDTO> booksPage = bookService.getBooksByCategory(category, pageable);
+            model.addAttribute("books", booksPage);
+            model.addAttribute("categories", CategoryEnum.values());
+        } else {
+            Page<BookSummaryDTO> allBooks = bookService.getAllBooks(pageable);
+            model.addAttribute("books", allBooks);
+        }
+        return "books";
+    }
+
+
 
     @GetMapping("/search")
     public String searchQuery(@Valid SearchBookDTO searchBookDTO,
@@ -127,7 +158,6 @@ public class BookController {
         if (!searchBookDTO.isEmpty()) {
             model.addAttribute("books", bookService.searchBooks(searchBookDTO, pageable));
         }
-
         return "books";
     }
 
