@@ -29,17 +29,19 @@ public class NutsoUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails map(UserEntity userEntity) {
-        UserDetails userDetails = User
+
+        return User
                 .withUsername(userEntity.getEmail())
                 .password(userEntity.getPassword())
                 .authorities(userEntity.getRoles().stream().map(NutsoUserDetailsService::map).toList())
                 .build();
-
-        return userDetails;
     }
+
     private static GrantedAuthority map(UserRoleEntity userRoleEntity) {
+
         return new SimpleGrantedAuthority(
                 "ROLE_" + userRoleEntity.getRole().name()
         );
+
     }
 }

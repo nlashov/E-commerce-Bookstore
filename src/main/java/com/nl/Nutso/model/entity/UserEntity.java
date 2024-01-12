@@ -31,8 +31,8 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<OrderEntity> orders;
 
-    @OneToMany(mappedBy = "user")
-    private List<CartEntity> cart;
+    @OneToOne(mappedBy = "user")
+    private CartEntity cart;
 
     public String getEmail() {
         return email;
@@ -94,6 +94,15 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity setOrders(List<OrderEntity> orders) {
         this.orders = orders;
+        return this;
+    }
+
+    public CartEntity getCart() {
+        return cart;
+    }
+
+    public UserEntity setCart(CartEntity cart) {
+        this.cart = cart;
         return this;
     }
 }

@@ -38,7 +38,8 @@ public class SecurityConfig {
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
                         .requestMatchers("/books/all").permitAll()
                         .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/books/**").hasRole(UserRoleEnum.ADMIN.name())
+                        //TODO this needs to be changed when "add to cart" button is added
+                        .requestMatchers(HttpMethod.POST, "/books/**").hasRole("ADMIN")
                         .requestMatchers("/error").permitAll()
                         // all other requests are authenticated.
                         .anyRequest().authenticated()

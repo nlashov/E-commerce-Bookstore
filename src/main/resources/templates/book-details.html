@@ -16,7 +16,7 @@
 <div class="container-fluid">
     <h2 class="text-center text-white mt-5">Details</h2>
     <div th:object="${book}" class="books row mx-auto d-flex flex-row justify-content-center">
-        <div class="book card col-sm-2 col-md-3  col-lg-4 m-1 p-0" >
+        <div class="book card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
 
             <div class="card-body pb-1">
                 <h5 class="card-title" th:text="*{summary()}"></h5>
@@ -47,19 +47,22 @@
                     <div class="card-text"><span>• Seller - TOD</span></div>
                 </li>
             </ul>
-            <div class="card-body" >
-                <form th:method="DELETE"
+            <div class="card-body">
+                <form sec:authorize="hasRole('ADMIN')"
+                      th:method="DELETE"
                       th:action="@{/books/{bookUUID}(bookUUID=*{uuid})}">
                     <input type="submit" value="Изтрий" class="link card-link"/>
                 </form>
-                <form th:method="GET"
+                <form sec:authorize="hasRole('ADMIN')"
+                      th:method="GET"
                       th:action="@{/books/{bookUUID}/edit(bookUUID=*{uuid})}">
                     <input type="submit" value="Промени" class="link card-link"/>
                 </form>
+                <a href="#" class="btn btn-success">Купи</a>
             </div>
         </div>
         <div class="book card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
-            <img th:src="*{imageUrl}" class="card-img-top"  alt="no image">
+            <img th:src="*{imageUrl}" class="card-img-top" alt="no image">
         </div>
     </div>
 </div>

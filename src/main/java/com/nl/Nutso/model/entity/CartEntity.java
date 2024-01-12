@@ -2,15 +2,23 @@ package com.nl.Nutso.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+
+import java.math.BigDecimal;
 
 
 @Entity
 public class CartEntity extends BaseEntity{
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    private int totalItems;
+
+    private BigDecimal totalPrices;
+
+    private Set<CartItemEntity> cartItem;
 
     public UserEntity getUser() {
         return user;

@@ -43,6 +43,8 @@ public class BookEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BookConditionEnum bookCondition;
 
+    private boolean isAvailable;
+
     public BookConditionEnum getBookCondition() {
         return bookCondition;
     }
@@ -130,6 +132,15 @@ public class BookEntity extends BaseEntity {
 
     public BookEntity setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+        return this;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public BookEntity setAvailable(boolean available) {
+        isAvailable = available;
         return this;
     }
 }
