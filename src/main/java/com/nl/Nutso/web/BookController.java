@@ -91,7 +91,8 @@ public class BookController {
 
     @PatchMapping("/{uuid}/edit")
     public String updateBook(@PathVariable("uuid") UUID uuid,
-                             @ModelAttribute("book") BookDetailDTO bookDetailDTO) {
+                             @ModelAttribute("book") BookDetailDTO bookDetailDTO,
+                             BindingResult bindingResult) {
 
 
         // Update the book using the service method
@@ -99,11 +100,9 @@ public class BookController {
         return "redirect:/books/" + uuid;
     }
 
-    @DeleteMapping("/{uuid}")
-    public String delete(@PathVariable("uuid") UUID uuid) {
-
-        bookService.deleteBook(uuid);
-
+    @PostMapping("/{uuid}")
+    public String deactivate(@PathVariable("uuid") UUID uuid) {
+        bookService.deactivateBook(uuid);
         return "redirect:/books/all";
     }
 
@@ -126,8 +125,8 @@ public class BookController {
             model.addAttribute("books", booksPage);
             model.addAttribute("categories", CategoryEnum.values());
         } else {
-            Page<BookSummaryDTO> allBooks = bookService.getAllBooks(pageable);
-            model.addAttribute("books", allBooks);
+            Page<BookSummaryDTO> allAvailableBooks = bookService.getAvailableBooks(pageable);
+            model.addAttribute("books", allAvailableBooks);
         }
         return "books";
     }

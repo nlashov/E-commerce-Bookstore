@@ -59,13 +59,13 @@
                            type="number"
                            class="form-control"
                            placeholder=""/>
-<!--                    <p th:if="${#fields.hasErrors('year')}"-->
-<!--                       class="errors alert alert-danger"-->
-<!--                       th:errors="*{year}">-->
+                    <!--                    <p th:if="${#fields.hasErrors('year')}"-->
+                    <!--                       class="errors alert alert-danger"-->
+                    <!--                       th:errors="*{year}">-->
 
-                                                        <p class="invalid-feedback errors alert alert-danger">
-                                                           Годината не може да бъде в бъдещето
-                                                        </p>
+                    <p class="invalid-feedback errors alert alert-danger">
+                        Годината не може да бъде в бъдещето
+                    </p>
                     </p>
                 </div>
                 <!-- EO: Year -->
@@ -129,6 +129,16 @@
             </div>
             <!-- EO: Image URL -->
 
+            <!-- Is Available -->
+            <div class="form-group">
+                <label class="text-white font-weight-bold" for="isAvailable">Налична</label>
+                <select id="isAvailable" name="isAvailable" class="form-control">
+                    <option value="true" th:selected="${book.isAvailable}">Да</option>
+                    <option value="false" th:selected="${!book.isAvailable}">Не</option>
+                </select>
+            </div>
+            <!-- EO: Is Available -->
+
             <div class="row">
                 <div class="col col-md-4">
                     <div class="button-holder d-flex">
@@ -136,6 +146,8 @@
                     </div>
                 </div>
             </div>
+
+        </div>
     </form>
 </div>
 

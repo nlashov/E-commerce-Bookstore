@@ -2,9 +2,20 @@ package com.nl.Nutso.model.enums;
 
 public enum CategoryEnum {
 
-    HISTORICAL("Исторически"),
+    HISTORICAL("История"),
     FANTASY("Фентъзи"),
-    PSYCHOLOGY("Психология");
+    PSYCHOLOGY("Психология"),
+    CLASSICS("Художествена литература"),
+    HEALTH("Здраве и благополучие"),
+    SCIENCE("Наука"),
+    BUSINESS("Бизнес"),
+    SPORT("Спорт и туризъм"),
+    ART("Изкуство"),
+    CHILDREN("Детска литература"),
+    CRIMI("Криминални романи и трилъри"),
+    POETRY("Поезия"),
+    SPIRITUAL("Духовност, митология и езотерика");
+
 
     private final String displayName;
 

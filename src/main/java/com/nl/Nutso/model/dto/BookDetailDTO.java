@@ -15,9 +15,28 @@ public record BookDetailDTO(
         String additionalInfo,
         CategoryEnum category,
         Integer year,
-        String imageUrl) {
+        String imageUrl,
+        Boolean isAvailable) {
+
+
+    public BookDetailDTO(UUID uuid, String title, String author, BigDecimal price,
+                         BookConditionEnum bookCondition, String additionalInfo,
+                         CategoryEnum category, Integer year, String imageUrl,
+                         Boolean isAvailable) {
+        this.uuid = uuid;
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.bookCondition = bookCondition;
+        this.additionalInfo = additionalInfo;
+        this.category = category;
+        this.year = year;
+        this.imageUrl = imageUrl;
+        this.isAvailable = (isAvailable != null) ? isAvailable : Boolean.TRUE;
+    }
 
     public String summary() {
         return title + ", " + author + ", " + year + "г.";
     }
+
 }

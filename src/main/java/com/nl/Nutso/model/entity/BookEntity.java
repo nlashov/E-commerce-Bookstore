@@ -3,10 +3,7 @@ package com.nl.Nutso.model.entity;
 import com.nl.Nutso.model.enums.BookConditionEnum;
 import com.nl.Nutso.model.enums.CategoryEnum;
 import com.nl.Nutso.model.validation.YearNotInFuture;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -18,7 +15,12 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "books")
-public class BookEntity extends BaseEntity {
+public class BookEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "book_id")
+    private Long id;
 
     @NotNull
     @JdbcTypeCode(Types.VARCHAR)
@@ -140,7 +142,7 @@ public class BookEntity extends BaseEntity {
     }
 
     public BookEntity setAvailable(boolean available) {
-        isAvailable = available;
+        this.isAvailable = available;
         return this;
     }
 }

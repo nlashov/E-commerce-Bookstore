@@ -8,70 +8,96 @@
 <body>
 <div th:replace="~{fragments/navbar.html}">Navbar</div>
 
+    <div class="container-fluid" style="margin-bottom: 60px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="sidebar col-md-2 mb-3">
+                <h4>Категории</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a th:href="@{/books/all}" th:text="Всички"></a>
+                    </li>
+                    <li th:each="category : ${categories}" class="list-group-item">
+                        <a th:href="@{/books/all(category=${category})}" th:text="${category.getDisplayName()}"></a>
+                    </li>
+                </ul>
+            </div>
+            <!-- EO Sidebar -->
 
-<div class="container-fluid">
-    <div class="row">
-
-        <!-- Sidebar -->
-        <div class="sidebar col-md-2">
-            <h4>Категории</h4>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <a th:href="@{/books/all}" th:text="Всички"></a>
-                </li>
-                <li th:each="category : ${categories}" class="list-group-item">
-                    <a th:href="@{/books/all(category=${category})}" th:text="${category.getDisplayName()}"></a>
-                </li>
-            </ul>
-
-            <div class="row justify-content-center mb-4">
-                <div class="col-md-12">
+            <!-- Main Content -->
+            <div class="col-md-10">
+                <!-- Search Form -->
+                <div class="search-form col-md-6 offset-md-3 text-center">
                     <form th:method="GET" th:action="@{/books/search}" th:object="${searchBookModel}">
                         <div class="input-group">
                             <input th:field="*{query}" class="form-control" type="search"
-                                   placeholder="Заглавие/автор" aria-label="Search" id="query">
+                                   placeholder="Търси по заглавие или автор" aria-label="Search" id="query">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit">Търси</button>
+                                <button class="btn btn-outline-secondary" type="submit"></button>
                             </div>
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
-        <!-- EO Sidebar -->
+                <!-- EO Sidebar -->
 
-        <!-- Main Content -->
-        <div class="col-md-10">
+                <!-- Main Content -->
 
-            <div class="books row mx-auto d-flex flex-row justify-content-center" style="border: 2px solid white;">
-                <div
-                        th:each="book: ${books}"
-                        th:object="${book}"
-                        class="col-sm-6 col-md-3  col-lg-2 m-1 p-5">
-                    <a th:href="@{/books/{bookUUID}(bookUUID=*{uuid})}">
-                        <img class="book-image" th:src="*{imageUrl}" alt="no-image.jpg">
-                    </a>
+                <div class="books row mx-auto d-flex flex-row justify-content-center">
+                    <div
+                            th:each="book: ${books}"
+                            th:object="${book}"
+                            class="book-container col-sm-6 col-md-3  col-lg-2 m-1 p-3" th:if="${book.isAvailable}">
+                        <a th:href="@{/books/{bookUUID}(bookUUID=*{uuid})}">
+                            <img class="book-image" th:src="*{imageUrl}" alt="no-image.jpg">
+                        </a>
+                        <div class="tooltip-container">
+                            <div class="book-title" style="color: #555" th:text="*{title}">
+                                <!--                            //TODO tooltip doesn't work-->
+                                <span class="tooltip" th:text="*{title}">Заглавие</span>
+                            </div>
+                        </div>
+                        <div class="font-weight-light" style="font-size:12px color: #555">
+                            <th:block th:text="*{author}">Автор</th:block>
+                        </div>
+                        <div class="font-weight-bold" style="font-size:15px color: #555">
+                            <th:block th:text="*{price} + лв">Цена</th:block>
+                        </div>
 
-                    <div class="text-white font-weight-bold">
-                        <th:block th:text="*{title}">Заглавие</th:block>
+
+                        <a href="#" class="btn btn-success">Добави в количката</a>
+
                     </div>
-                    <div class="text-white font-weight-light" style="font-size:12px;">
-                        <th:block th:text="*{author}">Автор</th:block>
-                    </div>
-                    <div class="text-white font-weight-bold" style="font-size:15px;">
-                        <th:block th:text="*{price} + лв">Цена</th:block>
-                    </div>
-
-
-                    <a href="#" class="btn btn-success">Купи</a>
-
                 </div>
             </div>
+
+        </div>
+
+        <div class="row justify-content-center">
+            <nav>
+                <ul class="pagination">
+                    <!-- Page Numbers -->
+                    <li th:each="pageNumber : ${#numbers.sequence(0, books.totalPages - 1)}" class="page-item"
+                        th:classappend="${pageNumber == books.number ? 'active' : ''}">
+                        <a th:href="@{/books/all(size=${books.getSize()},page=${pageNumber})}" class="page-link"
+                           href="#" th:text="${pageNumber + 1}">1</a>
+                    </li>
+                </ul>
+            </nav>
+<!--            <nav>-->
+<!--                <ul class="pagination">-->
+<!--                    <li class="page-item" th:classappend="${books.isLast()} ? 'disabled' : ''">-->
+<!--                        <a th:unless="${books.isLast()}"-->
+<!--                           th:href="@{/books/all(size=${books.getSize()},page=${books.getTotalPages() - 1})}"-->
+<!--                           class="page-link" href="#">Последна</a>-->
+<!--                        <a th:if="${books.isLast()}"-->
+<!--                           class="page-link" href="#">Последна</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
         </div>
     </div>
-</div>
 
-<div th:replace="~{fragments/footer.html}">Footer</div>
+    <div th:replace="~{fragments/footer.html}">Footer</div>
 
 </body>
 </html>

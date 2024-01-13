@@ -1,14 +1,19 @@
 package com.nl.Nutso.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 
 @Entity
-public class CartEntity extends BaseEntity{
+@Table(name = "cart")
+public class CartEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_id")
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -16,8 +21,9 @@ public class CartEntity extends BaseEntity{
 
     private int totalItems;
 
-    private BigDecimal totalPrices;
+    private BigDecimal totalPrice;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
     private Set<CartItemEntity> cartItem;
 
     public UserEntity getUser() {
@@ -27,10 +33,44 @@ public class CartEntity extends BaseEntity{
     public void setUser(UserEntity user) {
         this.user = user;
     }
-//    private Long customerId;
-//    private List<CartItem> items;
-//    private int totalQuantity;
-//    private double totalPrice;
+
 //    private String status;
 //    private String shippingAddress;
+
+
+    public int getTotalItems() {
+        return totalItems;
+    }
+
+    public CartEntity setTotalItems(int totalItems) {
+        this.totalItems = totalItems;
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public CartEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public CartEntity setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+        return this;
+    }
+
+    public Set<CartItemEntity> getCartItem() {
+        return cartItem;
+    }
+
+    public CartEntity setCartItem(Set<CartItemEntity> cartItem) {
+        this.cartItem = cartItem;
+        return this;
+    }
 }

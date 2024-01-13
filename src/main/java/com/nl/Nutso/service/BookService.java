@@ -24,11 +24,13 @@ public interface BookService {
 
     void updateBook(UUID bookUuid, BookDetailDTO bookDetailDTO);
 
-    void deleteBook(UUID bookId);
+    void deactivateBook(UUID bookId);
 
     Page<BookSummaryDTO> searchBooks(SearchBookDTO searchBookDTO, Pageable pageable);
 
     Page<BookSummaryDTO> getBooksByCategory(CategoryEnum category, Pageable pageable);
 
+    Page<BookSummaryDTO> getAvailableBooks(Pageable pageable);
 
+    Page<BookSummaryDTO> getUnavailableBooks(Pageable pageable);
 }

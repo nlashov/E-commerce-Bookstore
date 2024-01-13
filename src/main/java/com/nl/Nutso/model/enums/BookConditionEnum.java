@@ -1,8 +1,19 @@
 package com.nl.Nutso.model.enums;
 
 public enum BookConditionEnum {
-    BAD,
-    GOOD,
-    VERYGOOD,
-    EXCELLENT
+    BAD("Захабено"),
+    GOOD("Добро"),
+    VERYGOOD("Много добро"),
+    EXCELLENT("Отлично");
+
+    private final String displayName;
+
+    BookConditionEnum(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }
+

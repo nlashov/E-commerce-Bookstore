@@ -10,8 +10,6 @@ import com.nl.Nutso.repository.BookRepository;
 import com.nl.Nutso.repository.BookSpecification;
 import com.nl.Nutso.service.BookService;
 import com.nl.Nutso.service.exception.ObjectNotFoundException;
-import jakarta.transaction.Transactional;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,9 +46,12 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    @Transactional
-    public void deleteBook(UUID bookUuid) {
-        bookRepository.deleteByUuid(bookUuid);
+    public void deactivateBook(UUID bookUuid) {
+        BookEntity book = bookRepository.findBookByUuid(bookUuid)
+                .orElseThrow(() -> new ObjectNotFoundException("Book with id " + bookUuid + " not found!"));
+
+        book.setAvailable(false);
+        bookRepository.save(book);
     }
 
     @Override
@@ -76,15 +77,25 @@ public class BookServiceImpl implements BookService {
         book.setTitle(bookDetailDTO.title());
         book.setAuthor(bookDetailDTO.author());
         book.setPrice(bookDetailDTO.price());
-//        book.setCategory(bookDetailDTO.category());
-//        book.setBookCondition(bookDetailDTO.bookCondition());
+        book.setCategory(bookDetailDTO.category());
+        book.setBookCondition(bookDetailDTO.bookCondition());
         book.setYear(bookDetailDTO.year());
-//        book.setImageUrl(bookDetailDTO.imageUrl());
-//        book.setAdditionalInfo(bookDetailDTO.additionalInfo());
+        book.setImageUrl(bookDetailDTO.imageUrl());
+        book.setAdditionalInfo(bookDetailDTO.additionalInfo());
+        book.setAvailable(bookDetailDTO.isAvailable());
 
         bookRepository.save(book);
     }
 
+    @Override
+    public Page<BookSummaryDTO> getAvailableBooks(Pageable pageable) {
+        return bookRepository.findByIsAvailableTrue(pageable).map(BookServiceImpl::mapAsSummary);
+    }
+
+    @Override
+    public Page<BookSummaryDTO> getUnavailableBooks(Pageable pageable) {
+        return bookRepository.findByIsAvailableFalse(pageable).map(BookServiceImpl::mapAsSummary);
+    }
 
     public static BookEntity map(AddBookDTO addBookDTO) {
         return new BookEntity()
@@ -96,9 +107,9 @@ public class BookServiceImpl implements BookService {
                 .setAdditionalInfo(addBookDTO.additionalInfo())
                 .setCategory(addBookDTO.category())
                 .setYear(addBookDTO.year())
-                .setImageUrl(addBookDTO.imageUrl());
+                .setImageUrl(addBookDTO.imageUrl())
+                .setAvailable(true);
     }
-
 
 
     private static BookDetailDTO mapAsDetail(BookEntity bookEntity) {
@@ -111,7 +122,8 @@ public class BookServiceImpl implements BookService {
                 bookEntity.getAdditionalInfo(),
                 bookEntity.getCategory(),
                 bookEntity.getYear(),
-                bookEntity.getImageUrl());
+                bookEntity.getImageUrl(),
+                bookEntity.isAvailable());
 
     }
 
@@ -121,7 +133,8 @@ public class BookServiceImpl implements BookService {
                 bookEntity.getTitle(),
                 bookEntity.getAuthor(),
                 bookEntity.getPrice(),
-                bookEntity.getImageUrl());
+                bookEntity.getImageUrl(),
+                bookEntity.isAvailable());
     }
 
 
