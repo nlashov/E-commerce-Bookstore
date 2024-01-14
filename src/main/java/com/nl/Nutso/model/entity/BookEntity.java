@@ -145,4 +145,13 @@ public class BookEntity {
         this.isAvailable = available;
         return this;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public BookEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
 }
