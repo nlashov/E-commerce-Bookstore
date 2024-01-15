@@ -8,11 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-import java.math.BigDecimal;
-
 public record AddBookDTO(@NotEmpty String title,
                          @NotEmpty String author,
-                         @Positive @NotNull BigDecimal price,
+                         @Positive @NotNull Double price,
                          @NotNull BookConditionEnum bookCondition,
                          @Size(max = 200) String additionalInfo,
                          @NotNull CategoryEnum category,

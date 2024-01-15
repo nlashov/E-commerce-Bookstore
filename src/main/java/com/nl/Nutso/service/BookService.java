@@ -16,6 +16,8 @@ import java.util.UUID;
 
 public interface BookService {
 
+    BookEntity getBookByUuid(UUID bookUuid);
+
     UUID addBook(AddBookDTO addBookDTO);
 
     Page<BookSummaryDTO> getAllBooks(Pageable pageable);
@@ -33,4 +35,6 @@ public interface BookService {
     Page<BookSummaryDTO> getAvailableBooks(Pageable pageable);
 
     Page<BookSummaryDTO> getUnavailableBooks(Pageable pageable);
+
+    Page<BookSummaryDTO> getRelatedBooks(Long categoryId, Pageable pageable);
 }

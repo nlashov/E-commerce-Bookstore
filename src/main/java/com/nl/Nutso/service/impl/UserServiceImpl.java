@@ -5,6 +5,7 @@ import com.nl.Nutso.model.entity.UserEntity;
 import com.nl.Nutso.model.events.UserRegisteredEvent;
 import com.nl.Nutso.repository.UserRepository;
 import com.nl.Nutso.service.UserService;
+import com.nl.Nutso.service.exception.ObjectNotFoundException;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,12 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.appEventPublisher = applicationEventPublisher;
+    }
+
+    @Override
+    public UserEntity getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+        //TODO or else throw?
     }
 
     @Override

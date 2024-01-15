@@ -26,6 +26,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public BookEntity getBookByUuid(UUID bookUuid) {
+        return bookRepository.findBookByUuid(bookUuid)
+                .orElseThrow(() -> new ObjectNotFoundException("Book with uuid " + bookUuid + " not found."));
+    }
+
+    @Override
     public UUID addBook(AddBookDTO addBookDTO) {
         BookEntity newBook = map(addBookDTO);
         newBook = bookRepository.save(newBook);
@@ -95,6 +101,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public Page<BookSummaryDTO> getUnavailableBooks(Pageable pageable) {
         return bookRepository.findByIsAvailableFalse(pageable).map(BookServiceImpl::mapAsSummary);
+    }
+
+    @Override
+    public Page<BookSummaryDTO> getRelatedBooks(Long categoryId, Pageable pageable) {
+        return bookRepository.findRelatedBooks(categoryId, pageable).map(BookServiceImpl::mapAsSummary);
     }
 
     public static BookEntity map(AddBookDTO addBookDTO) {

@@ -33,7 +33,7 @@ public class BookEntity {
     private String author;
 
     @NotNull
-    private BigDecimal price;
+    private double price;
 
     private String additionalInfo;
 
@@ -90,11 +90,11 @@ public class BookEntity {
         return this;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public BookEntity setPrice(BigDecimal price) {
+    public BookEntity setPrice(double price) {
         this.price = price;
         return this;
     }

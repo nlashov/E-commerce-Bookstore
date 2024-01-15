@@ -1615,11 +1615,11 @@ pre code {
     }
 }
 .table {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 1rem;
-    background-color: transparent;
-}
+            color: white;
+            width: 80%; /* Adjust the width as needed */
+            margin-top: 20px; /* Adjust as needed for space between navbar and table */
+        }
+
 .table td,
 .table th {
     padding: 0.75rem;

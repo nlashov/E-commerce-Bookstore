@@ -21,7 +21,7 @@ public class CartEntity {
 
     private int totalItems;
 
-    private BigDecimal totalPrice;
+    private double totalPrice;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
     private Set<CartItemEntity> cartItems;
@@ -47,6 +47,15 @@ public class CartEntity {
         return this;
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public CartEntity setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+        return this;
+    }
+
     public Long getId() {
         return id;
     }
@@ -56,14 +65,6 @@ public class CartEntity {
         return this;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public CartEntity setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-        return this;
-    }
 
     public Set<CartItemEntity> getCartItems() {
         return cartItems;

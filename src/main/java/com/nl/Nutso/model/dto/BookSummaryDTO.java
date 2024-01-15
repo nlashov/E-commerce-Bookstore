@@ -7,7 +7,7 @@ public record BookSummaryDTO(
         String uuid,
         String title,
         String author,
-        BigDecimal price,
+        double price,
         String imageUrl,
         boolean isAvailable) {
 

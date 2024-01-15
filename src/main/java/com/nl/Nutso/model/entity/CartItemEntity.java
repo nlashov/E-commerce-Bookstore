@@ -2,8 +2,6 @@ package com.nl.Nutso.model.entity;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-
 @Entity
 @Table(name = "cart_item")
 public class CartItemEntity {
@@ -15,7 +13,7 @@ public class CartItemEntity {
 
     private int quantity = 1;
 
-    private BigDecimal Price;
+    private double price;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id")
@@ -43,12 +41,12 @@ public class CartItemEntity {
         return this;
     }
 
-    public BigDecimal getPrice() {
-        return Price;
+    public double getPrice() {
+        return price;
     }
 
-    public CartItemEntity setPrice(BigDecimal price) {
-        Price = price;
+    public CartItemEntity setPrice(double price) {
+        this.price = price;
         return this;
     }
 

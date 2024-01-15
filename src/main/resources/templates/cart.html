@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Количка</title>
+    <!-- Include your head fragment -->
+    <th:block th:replace="~{/fragments/head}">Head</th:block>
+</head>
+
+<body>
+<!-- Include your navbar fragment -->
+<div th:replace="~{fragments/navbar.html}">Navbar</div>
+
+<div class="cart-container" style="color:white;">
+    <h2>Вашата количка</h2>
+
+    <!-- Check if the cart is not empty -->
+    <th:block th:if="${not #lists.isEmpty(cart.cartItems)}">
+        <table class="table" style="color: white;">
+            <thead>
+            <tr>
+                <th>Заглавие на книгата</th>
+                <th>Автор</th>
+                <th>Количество</th>
+                <th>Цена</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Iterate over cart items -->
+            <tr th:each="cartItem : ${cart.cartItems}">
+                <td>
+                    <img th:src="${cartItem.book.imageUrl}" alt="Book Image" style="max-width: 100px; max-height: 100px;"/>
+                </td>
+                <td th:text="${cartItem.book.title}"></td>
+                <td th:text="${cartItem.book.author}"></td>
+                <td th:text="${cartItem.quantity}"></td>
+                <td th:text="${cartItem.book.price} + 'лв.'"></td>
+                <td>
+                    <!-- Add your update and delete buttons with the correct form -->
+                    <form th:action="@{/delete-from-cart}" method="post">
+                        <input type="hidden" name="id" th:value="${cartItem.book.uuid}">
+                        <button type="submit" name="action" value="delete" title="Delete" class="btn btn-warning">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+
+    <!-- If the cart is empty -->
+    <th:block th:if="${#lists.isEmpty(cart.cartItems)}">
+        <p>Количката ви е празна</p>
+    </th:block>
+</div>
+
+<!-- Include your footer fragment -->
+<div th:replace="~{fragments/footer.html}">Footer</div>
+</body>
+
+</html>

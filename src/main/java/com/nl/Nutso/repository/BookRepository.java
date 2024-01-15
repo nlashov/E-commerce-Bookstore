@@ -2,13 +2,14 @@ package com.nl.Nutso.repository;
 
 import com.nl.Nutso.model.entity.BookEntity;
 import com.nl.Nutso.model.enums.CategoryEnum;
-import com.nl.Nutso.service.impl.BookServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,4 +25,7 @@ public interface BookRepository extends
     Page<BookEntity> findByIsAvailableTrue(Pageable pageable);
 
     Page<BookEntity> findByIsAvailableFalse(Pageable pageable);
+
+    @Query(value = "select * from books b inner join categories c on c.category_id = b.category_id where b.category_id = ?1", nativeQuery = true)
+    Page<BookEntity> findRelatedBooks(Long categoryId, Pageable pageable);
 }
