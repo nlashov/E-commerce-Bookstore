@@ -101,8 +101,12 @@ public class BookController {
     }
 
     @PostMapping("/{uuid}")
-    public String deactivate(@PathVariable("uuid") UUID uuid) {
-        bookService.deactivateBook(uuid);
+    public String handleBookAction(@PathVariable("uuid") UUID uuid, @RequestParam("action") String action) {
+        if ("Деактивирай".equals(action)) {
+            bookService.deactivateBook(uuid);
+        } else if ("Активирай".equals(action)) {
+            bookService.activateBook(uuid);
+        }
         return "redirect:/books/all";
     }
 

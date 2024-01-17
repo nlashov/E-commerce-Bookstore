@@ -26,6 +26,8 @@ public interface BookService {
 
     void updateBook(UUID bookUuid, BookDetailDTO bookDetailDTO);
 
+    void activateBook(UUID bookUuid);
+
     void deactivateBook(UUID bookId);
 
     Page<BookSummaryDTO> searchBooks(SearchBookDTO searchBookDTO, Pageable pageable);
@@ -37,4 +39,6 @@ public interface BookService {
     Page<BookSummaryDTO> getUnavailableBooks(Pageable pageable);
 
     Page<BookSummaryDTO> getRelatedBooks(Long categoryId, Pageable pageable);
+
+
 }

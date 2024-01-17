@@ -51,7 +51,10 @@
                 </div>
                 <div class="row justify-content-center mt-4">
                     <form sec:authorize="hasRole('ADMIN')" th:method="POST" th:action="@{/books/{bookUUID}(bookUUID=*{uuid})}">
-                        <input type="submit" value="Деактивирай" class="link card-link"/>
+                        <!-- Show "Деактивирай" button if book is available -->
+                        <input th:if="${book.isAvailable}" type="submit" name="action" value="Деактивирай" class="link card-link"/>
+                        <!-- Show "Активирай" button if book is not available -->
+                        <input th:unless="${book.isAvailable}" type="submit" name="action" value="Активирай" class="link card-link"/>
                     </form>
                     <form sec:authorize="hasRole('ADMIN')" th:method="GET" th:action="@{/books/{bookUUID}/edit(bookUUID=*{uuid})}">
                         <input type="submit" value="Промени" class="link card-link"/>

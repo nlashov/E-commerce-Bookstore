@@ -50,6 +50,14 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findBookByUuid(bookUuid).map(BookServiceImpl::mapAsDetail);
     }
 
+    @Override
+    public void activateBook(UUID bookUuid) {
+        BookEntity book = bookRepository.findBookByUuid(bookUuid)
+                .orElseThrow(() -> new ObjectNotFoundException("Book with id " + bookUuid + " not found!"));
+
+        book.setAvailable(true);
+        bookRepository.save(book);
+    }
 
     @Override
     public void deactivateBook(UUID bookUuid) {
@@ -59,6 +67,8 @@ public class BookServiceImpl implements BookService {
         book.setAvailable(false);
         bookRepository.save(book);
     }
+
+
 
     @Override
     public Page<BookSummaryDTO> searchBooks(SearchBookDTO searchBookDTO, Pageable pageable) {
