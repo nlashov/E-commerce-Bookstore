@@ -15,7 +15,7 @@
     <h2>Вашата количка</h2>
 
     <!-- Check if the cart is not empty -->
-    <th:block th:if="${not #lists.isEmpty(cart.cartItems)}">
+    <th:block th:if="${cart != null and not #lists.isEmpty(cart.cartItems)}">
         <table class="table" style="color: white;">
             <thead>
             <tr>
@@ -37,8 +37,8 @@
                 <td th:text="${cartItem.book.price} + 'лв.'"></td>
                 <td>
                     <!-- Add your update and delete buttons with the correct form -->
-                    <form th:action="@{/delete-from-cart}" method="post">
-                        <input type="hidden" name="id" th:value="${cartItem.book.uuid}">
+                    <form th:action="@{/remove-from-cart}" th:method="POST">
+                        <input type="hidden" name="uuid" th:value="${cartItem.book.uuid}">
                         <button type="submit" name="action" value="delete" title="Delete" class="btn btn-warning">Delete</button>
                     </form>
                 </td>
@@ -48,7 +48,7 @@
     </th:block>
 
     <!-- If the cart is empty -->
-    <th:block th:if="${#lists.isEmpty(cart.cartItems)}">
+    <th:block th:if="${cart == null or #lists.isEmpty(cart.cartItems)}">
         <p>Количката ви е празна</p>
     </th:block>
 </div>

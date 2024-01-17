@@ -8,6 +8,7 @@ import com.nl.Nutso.model.entity.UserEntity;
 public interface CartService {
 
     CartEntity addItemToCart(UserEntity user, BookEntity book);
-    void removeItemFromCart();
+    CartEntity removeItemFromCart(UserEntity user, BookEntity book);
+    CartEntity updateCart(UserEntity user);
 
 }

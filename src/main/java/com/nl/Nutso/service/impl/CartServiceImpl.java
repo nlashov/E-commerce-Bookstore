@@ -7,8 +7,9 @@ import com.nl.Nutso.model.entity.UserEntity;
 import com.nl.Nutso.repository.CartItemRepository;
 import com.nl.Nutso.repository.CartRepository;
 import com.nl.Nutso.service.CartService;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -54,7 +55,7 @@ public class CartServiceImpl implements CartService {
         } else {
             cartItem.setPrice(book.getPrice());
         }
-
+        //TODO if book is already in the cart, don't add.
         cartItemRepository.save(cartItem);
 
         cart.setCartItems(cartItems);
@@ -68,8 +69,45 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeItemFromCart() {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public CartEntity removeItemFromCart(UserEntity user, BookEntity book) {
 
+        CartEntity cart = user.getCart();
+
+        if (cart == null) {
+            cart = new CartEntity();
+            user.setCart(cart);
+        }
+
+        Set<CartItemEntity> cartItems = cart.getCartItems();
+
+        if (cartItems == null) {
+            cartItems = new HashSet<>();
+            cart.setCartItems(cartItems);
+        }
+
+        CartItemEntity cartItemToRemove = findCartItem(cartItems, book.getId());
+
+        if (cartItemToRemove != null) {
+            cartItems.remove(cartItemToRemove);
+            cartItemRepository.delete(cartItemToRemove);
+        }
+
+        return cart;
+    }
+
+    public CartEntity updateCart(UserEntity user) {
+
+        CartEntity cart = user.getCart();
+        if (cart != null) {
+            Set<CartItemEntity> cartItems = cart.getCartItems();
+            if (cartItems != null) {
+                cart.setTotalPrice(calculateTotalPrice(cartItems));
+                cart.setTotalItems(calculateTotalItems(cartItems));
+                return cartRepository.save(cart);
+            }
+        }
+        return cart;
     }
 
     private CartItemEntity findCartItem(Set<CartItemEntity> cartItems, Long bookId) {
