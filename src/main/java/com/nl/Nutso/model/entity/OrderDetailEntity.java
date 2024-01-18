@@ -11,7 +11,7 @@ public class OrderDetailEntity {
     @Column(name = "order_detail_id")
     private Long id;
 
-    private int quantity;
+    private int totalItems;
     private double totalPrice;
     private double unitPrice;
 
@@ -32,12 +32,12 @@ public class OrderDetailEntity {
         return this;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getTotalItems() {
+        return totalItems;
     }
 
-    public OrderDetailEntity setQuantity(int quantity) {
-        this.quantity = quantity;
+    public OrderDetailEntity setTotalItems(int totalItems) {
+        this.totalItems = totalItems;
         return this;
     }
 

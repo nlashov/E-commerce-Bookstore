@@ -2,15 +2,12 @@ package com.nl.Nutso.web;
 
 import com.nl.Nutso.model.entity.BookEntity;
 import com.nl.Nutso.model.entity.CartEntity;
-import com.nl.Nutso.model.entity.CartItemEntity;
 import com.nl.Nutso.model.entity.UserEntity;
 import com.nl.Nutso.service.BookService;
 import com.nl.Nutso.service.CartService;
 import com.nl.Nutso.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +19,6 @@ import java.util.UUID;
 
 @Controller
 public class CartController {
-
-    private static final Logger logger = LoggerFactory.getLogger(CartController.class);
-
 
     private final BookService bookService;
     private final UserService userService;
@@ -38,7 +32,6 @@ public class CartController {
 
     @GetMapping("/cart")
     public String cart(Model model, Principal principal, HttpSession httpSession) {
-        logger.info("Entering cart method.");
         if (principal == null) {
             return "redirect:/login";
         }
@@ -57,7 +50,6 @@ public class CartController {
         httpSession.setAttribute("totalItems", cart.getTotalItems());
         model.addAttribute("subTotal", cart.getTotalPrice());
         model.addAttribute("cart", cart);
-        logger.info("Exiting cart method.");
         return "cart";
     }
 

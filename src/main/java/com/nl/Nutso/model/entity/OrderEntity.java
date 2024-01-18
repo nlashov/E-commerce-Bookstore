@@ -1,5 +1,6 @@
 package com.nl.Nutso.model.entity;
 
+import com.nl.Nutso.model.enums.PaymentMethodEnum;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -16,17 +17,25 @@ public class OrderEntity {
 
     private Date orderDate;
 
-    private double totalPrice;
-
     private String orderStatus;
 
-    private String notes;
+    private String note;
+
+    private PaymentMethodEnum paymentMethod;
+
+    private boolean isAccept;
+
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserEntity user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDetailEntity> orderDetailList;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id")
+    private AddressEntity address;
 
     public Long getId() {
         return id;
@@ -46,15 +55,6 @@ public class OrderEntity {
         return this;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public OrderEntity setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-        return this;
-    }
-
     public String getOrderStatus() {
         return orderStatus;
     }
@@ -64,12 +64,39 @@ public class OrderEntity {
         return this;
     }
 
-    public String getNotes() {
-        return notes;
+    public String getNote() {
+        return note;
     }
 
-    public OrderEntity setNotes(String notes) {
-        this.notes = notes;
+    public OrderEntity setNote(String note) {
+        this.note = note;
+        return this;
+    }
+
+    public PaymentMethodEnum getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public OrderEntity setPaymentMethod(PaymentMethodEnum paymentMethod) {
+        this.paymentMethod = paymentMethod;
+        return this;
+    }
+
+    public boolean isAccept() {
+        return isAccept;
+    }
+
+    public OrderEntity setAccept(boolean accept) {
+        isAccept = accept;
+        return this;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public OrderEntity setUser(UserEntity user) {
+        this.user = user;
         return this;
     }
 
@@ -82,11 +109,12 @@ public class OrderEntity {
         return this;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public AddressEntity getAddress() {
+        return address;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public OrderEntity setAddress(AddressEntity address) {
+        this.address = address;
+        return this;
     }
 }

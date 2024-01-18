@@ -4,27 +4,33 @@ import com.nl.Nutso.model.entity.BookEntity;
 import com.nl.Nutso.model.entity.CartEntity;
 import com.nl.Nutso.model.entity.CartItemEntity;
 import com.nl.Nutso.model.entity.UserEntity;
+import com.nl.Nutso.repository.BookRepository;
 import com.nl.Nutso.repository.CartItemRepository;
 import com.nl.Nutso.repository.CartRepository;
+import com.nl.Nutso.repository.UserRepository;
 import com.nl.Nutso.service.CartService;
+import com.nl.Nutso.service.exception.BookAlreadyInCartException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class CartServiceImpl implements CartService {
 
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
-    private CartItemRepository cartItemRepository;
-
-    public CartServiceImpl(CartRepository cartRepository, CartItemRepository cartItemRepository) {
+    public CartServiceImpl(CartRepository cartRepository, CartItemRepository cartItemRepository, BookRepository bookRepository, UserRepository userRepository) {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
+        this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -44,6 +50,11 @@ public class CartServiceImpl implements CartService {
             cart.setCartItems(cartItems);
         }
 
+        if (isBookAlreadyInAnyCart(book)) {
+            // Handle accordingly, e.g., return a message or throw a custom exception
+            throw new BookAlreadyInCartException("Book is already in another user's cart");
+        }
+
         CartItemEntity cartItem = findCartItem(cartItems, book.getId());
 
         if (cartItem == null) {
@@ -52,24 +63,29 @@ public class CartServiceImpl implements CartService {
             cartItem.setPrice(book.getPrice());
             cartItem.setCart(cart);
             cartItems.add(cartItem);
+
+            book.setAvailable(false);
+            bookRepository.save(book);
+
         } else {
             cartItem.setPrice(book.getPrice());
         }
-        //TODO if book is already in the cart, don't add.
+
+        scheduleCartExpiryTask(cart);
+
         cartItemRepository.save(cartItem);
 
         cart.setCartItems(cartItems);
-        double totalPrice = calculateTotalPrice(cartItems);
-        int totalItems = calculateTotalItems(cartItems);
-        cart.setTotalItems(totalItems);
-        cart.setTotalPrice(totalPrice);
+        cart.setTotalItems(calculateTotalItems(cartItems));
+        cart.setTotalPrice(calculateTotalPrice(cartItems));
         cart.setUser(user);
 
         return cartRepository.save(cart);
     }
 
+
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public CartEntity removeItemFromCart(UserEntity user, BookEntity book) {
 
         CartEntity cart = user.getCart();
@@ -91,6 +107,8 @@ public class CartServiceImpl implements CartService {
         if (cartItemToRemove != null) {
             cartItems.remove(cartItemToRemove);
             cartItemRepository.delete(cartItemToRemove);
+            book.setAvailable(true);
+            bookRepository.save(book);
         }
 
         return cart;
@@ -110,11 +128,43 @@ public class CartServiceImpl implements CartService {
         return cart;
     }
 
+    @Override
+    public void deleteCartById(Long id) {
+        return cartRepository.deleteById(id);
+    }
+
     private CartItemEntity findCartItem(Set<CartItemEntity> cartItems, Long bookId) {
         return cartItems.stream()
                 .filter(item -> Objects.equals(item.getBook().getId(), bookId))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public boolean isBookAlreadyInAnyCart(BookEntity book) {
+        List<UserEntity> allUsers = userRepository.findAll();
+
+        for (UserEntity user : allUsers) {
+            CartEntity cart = user.getCart();
+            if (cart != null && isBookInCart(cart, book)) {
+                return true; // Book is found in at least one cart
+            }
+        }
+
+        return false; // Book is not in any cart
+    }
+
+    private boolean isBookInCart(CartEntity cart, BookEntity book) {
+        Set<CartItemEntity> cartItems = cart.getCartItems();
+
+        if (cartItems != null) {
+            for (CartItemEntity cartItem : cartItems) {
+                if (cartItem.getBook().equals(book)) {
+                    return true; // Book is found in this cart
+                }
+            }
+        }
+
+        return false; // Book is not in this cart
     }
 
     private double calculateTotalPrice(Set<CartItemEntity> cartItems) {
@@ -129,5 +179,38 @@ public class CartServiceImpl implements CartService {
                 .sum();
     }
 
+    @Transactional
+    private void scheduleCartExpiryTask(CartEntity cart) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
+        scheduler.schedule(() -> {
+            try {
+
+                CartEntity cartWithItems = cartRepository.findByIdWithItems(cart.getId()).orElse(null);
+
+                if (cartWithItems != null) {
+
+                    Set<CartItemEntity> cartItems = cartWithItems.getCartItems();
+                    if (cartItems != null) {
+                        cartItems.forEach(cartItem -> {
+                            BookEntity book = cartItem.getBook();
+                            book.setAvailable(true);
+                            bookRepository.save(book);
+                        });
+                    }
+
+                    cartRepository.delete(cartWithItems);
+
+                    // Log after saving changes to the cart
+                    System.out.println("Cart deleted: " + cartWithItems.getId());
+                }
+            } catch (Exception e) {
+                // TODO Log any exceptions that might occur during the task execution
+                e.printStackTrace();
+            }
+            //TODO test what happens after an order is placed
+        }, 2, TimeUnit.MINUTES);
+
+        scheduler.shutdown();
+    }
 }

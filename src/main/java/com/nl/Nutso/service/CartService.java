@@ -10,5 +10,6 @@ public interface CartService {
     CartEntity addItemToCart(UserEntity user, BookEntity book);
     CartEntity removeItemFromCart(UserEntity user, BookEntity book);
     CartEntity updateCart(UserEntity user);
+    void deleteCartById(Long id);
 
 }
