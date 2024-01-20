@@ -130,7 +130,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void deleteCartById(Long id) {
-        return cartRepository.deleteById(id);
+        cartRepository.deleteById(id);
     }
 
     private CartItemEntity findCartItem(Set<CartItemEntity> cartItems, Long bookId) {

@@ -11,12 +11,12 @@
 <!-- Include your navbar fragment -->
 <div th:replace="~{fragments/navbar.html}">Navbar</div>
 
-<div class="cart-container" style="color:white;">
+<div class="cart-container">
     <h2>Вашата количка</h2>
 
     <!-- Check if the cart is not empty -->
     <th:block th:if="${cart != null and not #lists.isEmpty(cart.cartItems)}">
-        <table class="table" style="color: white;">
+        <table class="table" style="color: black;">
             <thead>
             <tr>
                 <th></th>
@@ -37,7 +37,6 @@
                 <td th:text="${cartItem.quantity}"></td>
                 <td th:text="${cartItem.book.price} + 'лв.'"></td>
                 <td>
-                    <!-- Add your update and delete buttons with the correct form -->
                     <form th:action="@{/remove-from-cart}" th:method="POST">
                         <input type="hidden" name="uuid" th:value="${cartItem.book.uuid}">
                         <button type="submit" name="action" value="delete" title="Delete" class="btn btn-warning">Delete</button>
@@ -46,13 +45,26 @@
             </tr>
             </tbody>
         </table>
+
+        <!-- Display totalAmount and totalItems -->
+        <div class="cart-actions">
+            <p>Total Items: <span th:text="${cart.totalItems}"></span></p>
+            <p>Total Amount: <span th:text="${cart.totalPrice}"></span> лв.</p>
+            <!-- Proceed to checkout button -->
+            <a th:href="@{/checkout}">
+                <button class="checkout-btn">Proceed to Checkout</button>
+            </a>
+        </div>
+
     </th:block>
 
     <!-- If the cart is empty -->
     <th:block th:if="${cart == null or #lists.isEmpty(cart.cartItems)}">
         <p>Количката ви е празна</p>
     </th:block>
+
 </div>
+
 
 <!-- Include your footer fragment -->
 <div th:replace="~{fragments/footer.html}">Footer</div>

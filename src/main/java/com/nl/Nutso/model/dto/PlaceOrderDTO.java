@@ -9,5 +9,4 @@ public record PlaceOrderDTO(String street,
                             String note,
                             PaymentMethodEnum paymentMethod) {
 
-
 }

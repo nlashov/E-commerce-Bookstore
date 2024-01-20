@@ -36,12 +36,18 @@ body {
     margin: auto;
     margin-top: 105px;
     width: 60%;
+    background-color: #f8f9fa; /* Light gray background color */
+    padding: 20px;
+    border-radius: 10px;
+    color: #000000; /* Black text color */
 }
 
 .table {
     color: white;
     width: 80%;
-    margin-top: 20px;
+    background-color: #ffffff; /* White background color */
+    border: 1px solid #dee2e6; /* Gray border */
+    border-radius: 5px;
 }
 
 .book-container {
@@ -53,6 +59,27 @@ body {
     flex-direction: column;
     height: 100%; /* Ensure the container takes full height */
 }
+
+.table th, .table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6; /* Gray border between rows */
+        }
+
+        .cart-actions {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .checkout-btn {
+            background-color: #28a745; /* Green color for the button */
+            color: #ffffff; /* White text color */
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
 .book-container img {
     width: 100%;

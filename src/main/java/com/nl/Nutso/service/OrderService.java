@@ -13,4 +13,6 @@ public interface OrderService {
     List<OrderEntity> getAllOrders();
     void acceptOrder(Long id);
     void cancelOrder(Long id);
+    List<OrderEntity> getAllOrdersToAccept();
+    List<OrderEntity> getAllAcceptedOrders();
 }

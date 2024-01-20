@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Checkout</title>
+    <th:block th:replace="~{/fragments/head}">Head</th:block>
+</head>
+
+<body>
+<div th:replace="~{fragments/navbar.html}">Navbar</div>
+
+<div class="cart-container" style="color:black;">
+    <div class="row">
+        <!-- Left side: Address form -->
+        <div class="col-md-4">
+            <form th:action="@{/place-order}" th:method="post" th:object="${placeOrderDTO}" class="border p-4">
+                <h4>Адрес за доставка</h4>
+                <div class="form-group">
+                    <label for="street">Улица:</label>
+                    <input type="text" th:field="*{street}" id="street" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">Град:</label>
+                    <input type="text" th:field="*{city}" id="city" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="region">Област:</label>
+                    <input type="text" th:field="*{region}" id="region" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="zipCode">Пощенски код:</label>
+                    <input type="text" th:field="*{zipCode}" id="zipCode" class="form-control" required>
+                </div>
+                <!-- Add other address form fields as needed -->
+            </form>
+        </div>
+
+        <!-- Right side: Payment method and order overview -->
+        <div class="col-md-8">
+            <form th:action="@{/place-order}" th:method="post" th:object="${placeOrderDTO}" class="border p-4">
+                <div class="row">
+                    <!-- Payment method form -->
+                    <div class="col-md-4">
+                        <h4>Payment Method</h4>
+                        <!-- Add your payment method options (checkboxes, radio buttons, etc.) here -->
+                        <!-- For example: -->
+                        <div th:each="paymentMethod : ${T(com.nl.Nutso.model.enums.PaymentMethodEnum).values()}">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" value="|${paymentMethod}|" id="paymentMethod_${paymentMethod}"/>
+                                <label class="form-check-label" th:for="'paymentMethod_' + ${paymentMethod}">
+                                    <span th:text="${paymentMethod.displayName}"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- Add other payment method options as needed -->
+                    </div>
+
+                    <!-- Order overview -->
+                    <div class="col-md-8">
+                        <h4>Order Overview</h4>
+                        <!-- Display items from the cart -->
+                        <!-- For example: -->
+                        <ul th:each="cartItem : ${cart.cartItems}">
+                            <li th:text="${cartItem.book.title + ' - ' + cartItem.price + 'лв.'}"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Place order button -->
+                <div class="text-right mt-4">
+                    <button type="submit" class="btn btn-primary">Завърши поръчка</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer.html}">Footer</div>
+</body>
+
+</html>

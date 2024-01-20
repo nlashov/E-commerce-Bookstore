@@ -8,7 +8,6 @@ public class CartItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_detail_id")
     private Long id;
 
     private int quantity = 1;

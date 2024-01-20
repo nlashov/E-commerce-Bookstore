@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Order Management</title>
+    <th:block th:replace="~{/fragments/head}">Head</th:block>
+</head>
+
+<body>
+<div th:replace="~{fragments/navbar.html}">Navbar</div>
+
+<div class="container mt-4" style="color:white;">
+    <h2>Order Management</h2>
+
+    <table class="table" style="color:black;">
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Customer</th>
+            <th>Address</th>
+            <th>Total Items</th>
+            <th>Total Price</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate over orders with isAccept=false -->
+        <tr th:each="order : ${orders}" th:if="${!order.isAccept}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.orderDate}"></td>
+            <td th:text="${order.user.email}"></td>
+<!--            <td th:text="${order.address.street}, ${order.address.city}, ${order.address.region} ${order.address.zipCode}"></td>-->
+            <td th:text="${order.orderDetailList[0].totalItems}"></td>
+            <td th:text="${order.orderDetailList[0].totalPrice}"></td>
+            <td>
+                <!-- Accept and Decline buttons -->
+                <form th:action="@{/accept-order}" method="post">
+                    <input type="hidden" th:name="orderId" th:value="${order.id}" />
+                    <button type="submit" class="btn btn-success">Accept</button>
+                </form>
+                <form th:action="@{/decline-order}" method="post">
+                    <input type="hidden" th:name="orderId" th:value="${order.id}" />
+                    <button type="submit" class="btn btn-danger">Decline</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="~{fragments/footer.html}">Footer</div>
+</body>
+
+</html>

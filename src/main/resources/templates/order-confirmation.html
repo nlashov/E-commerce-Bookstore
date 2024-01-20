@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="~{/fragments/head}">Head</th:block>
+
+<body>
+<div th:replace="~{fragments/navbar.html}">Navbar</div>
+
+
+<div class="container-fluid">
+    <h5 class="text-center text-white mt-5">
+
+        ПОРЪЧКАТА Е ПОТВЪРДЕНА. БУМ!
+
+    </h5>
+</div>
+
+<div th:replace="~{fragments/footer.html}">Footer</div>
+</body>
+</html>
