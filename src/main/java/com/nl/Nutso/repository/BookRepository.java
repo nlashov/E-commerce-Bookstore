@@ -26,6 +26,5 @@ public interface BookRepository extends
 
     Page<BookEntity> findByIsAvailableFalse(Pageable pageable);
 
-    @Query(value = "select * from books b inner join categories c on c.category_id = b.category_id where b.category_id = ?1", nativeQuery = true)
-    Page<BookEntity> findRelatedBooks(Long categoryId, Pageable pageable);
+    List<BookEntity> findByCategoryAndUuidNot(CategoryEnum category, UUID uuid);
 }

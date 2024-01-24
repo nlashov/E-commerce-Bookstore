@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Checkout</title>
+    <th:block th:replace="~{/fragments/head}">Head</th:block>
+</head>
+
+<body>
+<div th:replace="~{fragments/navbar.html}">Navbar</div>
+
+<div class="cart-container" style="color:black;">
+    <div class="row">
+        <!-- Order Overview -->
+        <div class="col-md-12">
+            <h4>Книги за поръчване</h4>
+            <table class="table" style="color:black;">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Заглавие</th>
+                    <th>Автор</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                </tr>
+                </thead>
+                <tbody th:each="cartItem : ${cart.cartItems}">
+                <tr>
+                    <td>
+                        <img th:src="${cartItem.book.imageUrl}" alt="Book Image" style="max-width: 100px; max-height: 100px;"/>
+                    </td>
+                    <td th:text="${cartItem.book.title}"></td>
+                    <td th:text="${cartItem.book.author}"></td>
+                    <td th:text="${cartItem.quantity}"></td>
+                    <td th:text="${cartItem.price}"></td>
+                </tr>
+                </tbody>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th class="font-weight-bold" th:text="${cart.totalItems}"></th>
+                    <th class="font-weight-bold" th:text="${cart.totalPrice} + 'лв.'"></th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="cart-container>">
+        <form th:action="@{/place-order}" th:method="post" th:object="${placeOrderDTO}" class="border p-4">
+            <div class="row mt-4">
+                <!-- Address -->
+                <div class="col-md-8" style="color:black;">
+                    <h4>Адрес</h4>
+                    <!-- Address form fields -->
+                    <div class="form-group">
+                        <label for="street">Улица:</label>
+                        <input type="text" th:field="*{street}" id="street" class="form-control col-6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Град:</label>
+                        <input type="text" th:field="*{city}" id="city" class="form-control col-6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="region">Област:</label>
+                        <input type="text" th:field="*{region}" id="region" class="form-control col-6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode">Пощенски код:</label>
+                        <input type="text" th:field="*{zipCode}" id="zipCode" class="form-control col-6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Телефонен номер:</label>
+                        <input type="text" th:field="*{phoneNumber}" id="phoneNumber" class="form-control col-6" required>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="col-md-4">
+                    <h4>Начин на плащане</h4>
+                    <!-- Payment Method form fields -->
+                    <div th:each="paymentMethod : ${T(com.nl.Nutso.model.enums.PaymentMethodEnum).values()}">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod"
+                                   th:value="${paymentMethod}"
+                                   id="paymentMethod_${paymentMethod}"/>
+                            <label class="form-check-label" th:for="'paymentMethod_' + ${paymentMethod}">
+                                <span th:text="${paymentMethod.displayName}"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Note form fields on a separate row -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h4>Бележка</h4>
+                    <!-- Note form fields -->
+                    <div class="form-group">
+                        <label for="note">Моля оставете бележка, ако има специфики при поръчката Ви:</label>
+                        <textarea th:field="*{note}" id="note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Place order button -->
+            <div class="row mt-4">
+                <div class="col-md-12 text-right">
+                    <button type="submit" class="btn btn-primary">Завърши поръчка</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <div th:replace="~{fragments/footer.html}">Footer</div>
+</body>
+
+</html>

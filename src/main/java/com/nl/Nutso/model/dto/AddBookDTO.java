@@ -17,9 +17,10 @@ public record AddBookDTO(@NotEmpty String title,
                          @YearNotInFuture
                          @NotNull(message = "Year must be provided!")
                          Integer year,
-                         @NotEmpty String imageUrl) {
+                         @NotEmpty String imageUrl,
+                         @NotEmpty String publisher) {
 
     public static AddBookDTO empty() {
-        return new AddBookDTO(null, null, null, null, null, null, null, null);
+        return new AddBookDTO(null, null, null, null, null, null, null, null, null);
     }
 }

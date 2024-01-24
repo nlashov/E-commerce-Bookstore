@@ -61,18 +61,20 @@
                             <div class="dropdown-divider"></div>
                         </a>
                         <a class="dropdown-item" sec:authorize="isAuthenticated()">
-                           <form th:method="post"
-                           th:action="@{/users/logout}">
-                            <input type="submit" value="Изход"/>
-                           </form>
+                            <form th:method="post"
+                                  th:action="@{/users/logout}">
+                                <input type="submit" value="Изход"/>
+                            </form>
                         </a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cart">
-                        <i class="fa-solid fa-cart-shopping"></i>Количка
+                    <a th:href="@{/cart}" class="nav-link">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class='badge' th:text = "${session.totalItems == null} ? '0' : ${session.totalItems}"></span>
                     </a>
                 </li>
+
             </ul>
         </div>
     </nav>

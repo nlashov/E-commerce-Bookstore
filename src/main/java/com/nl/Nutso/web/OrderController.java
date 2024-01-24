@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -41,7 +43,7 @@ public class OrderController {
         CartEntity cart = customer.getCart();
         model.addAttribute("cart", cart);
         model.addAttribute("placeOrderDTO", placeOrderDTO);
-        return "checkout";
+        return "order/checkout";
     }
 
     @PostMapping("/place-order")
@@ -67,7 +69,7 @@ public class OrderController {
     @GetMapping("/order-confirmation")
     public String confirmOrder() {
 
-        return "order-confirmation";
+        return "order/order-confirmation";
     }
 
     @GetMapping("/admin/orders-to-accept")
@@ -75,6 +77,31 @@ public class OrderController {
 
         List<OrderEntity> ordersToAccept = orderService.getAllOrdersToAccept();
         model.addAttribute("orders", ordersToAccept);
-        return "orders-to-accept";
+        return "order/orders-to-accept";
+    }
+
+    @GetMapping("/admin/orders-accepted")
+    public String ordersAccepted(Model model) {
+
+        List<OrderEntity> acceptedOrders = orderService.getAllAcceptedOrders();
+        model.addAttribute("orders", acceptedOrders);
+        return "order/orders-accepted";
+    }
+
+    @PostMapping("/accept-order")
+    public String acceptOrder(@RequestParam Long orderId,
+                              RedirectAttributes redirectAttributes) {
+        orderService.acceptOrder(orderId);
+        redirectAttributes.addFlashAttribute("successMessage", "Order accepted successfully");
+        return "redirect:/admin/orders-to-accept";
+    }
+
+    @PostMapping("/decline-order")
+    public String declineOrder(@RequestParam Long orderId,
+                              RedirectAttributes redirectAttributes) {
+        orderService.cancelOrder(orderId);
+        redirectAttributes.addFlashAttribute("successMessage", "Order has been declined");
+        return "redirect:/admin/orders-to-accept";
     }
 }
+

@@ -41,6 +41,8 @@ public class BookEntity {
     @Enumerated(EnumType.STRING)
     private CategoryEnum category;
 
+    private String publisher;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private BookConditionEnum bookCondition;
@@ -152,6 +154,15 @@ public class BookEntity {
 
     public BookEntity setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public BookEntity setPublisher(String publisher) {
+        this.publisher = publisher;
         return this;
     }
 }

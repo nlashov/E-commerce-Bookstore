@@ -38,7 +38,7 @@ public interface BookService {
 
     Page<BookSummaryDTO> getUnavailableBooks(Pageable pageable);
 
-    Page<BookSummaryDTO> getRelatedBooks(Long categoryId, Pageable pageable);
+    List<BookDetailDTO> getRelatedBooksByCategory(BookDetailDTO currentBook);
 
 
 }

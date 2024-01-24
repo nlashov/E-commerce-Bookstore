@@ -1,8 +1,12 @@
 package com.nl.Nutso.config;
 
+import com.nl.Nutso.model.events.OrderPlacedEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -37,4 +41,5 @@ public class MailConfiguration {
 
         return properties;
     }
+
 }

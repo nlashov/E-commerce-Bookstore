@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Портвърдени поръчки</title>
+    <th:block th:replace="~{/fragments/head}">Head</th:block>
+</head>
+
+<body>
+<div th:replace="~{fragments/navbar.html}">Navbar</div>
+
+<div class="cart-container" style="color:black;">
+    <h2>Портвърдени поръчки</h2>
+
+    <table class="table" style="color:black;">
+        <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Клиент</th>
+            <th>Адрес</th>
+            <th>Общо книги</th>
+            <th>Обща Цена</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}" th:if="${order.isAccept}">
+            <td th:text="${order.orderDate}"></td>
+            <td th:text="${order.user.firstName + ' ' + order.user.lastName + ', ' + order.user.email}"></td>
+            <td th:text="${order.address?.street + ', ' + order.address?.city + ', ' + order.address?.region + ', ' + order.address?.zipCode + ', ' + order.address.phoneNumber}"></td>
+            <td>
+                <ul>
+                    <li th:each="orderDetail : ${order.orderDetailList}">
+                        <span th:text="'- ' + ${orderDetail.book.title + ' (' + orderDetail.book.author} + ')'"></span>
+                    </li>
+                </ul>
+            </td>
+            <td th:text="${order.orderDetailList[0].totalItems}"></td>
+            <td th:text="${order.orderDetailList[0].totalPrice}"></td>
+            <td>
+                <text class="btn-success">Приета</text>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="~{fragments/footer.html}">Footer</div>
+</body>
+
+</html>

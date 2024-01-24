@@ -3,6 +3,9 @@ package com.nl.Nutso.model.entity;
 import com.nl.Nutso.model.enums.PaymentMethodEnum;
 import jakarta.persistence.*;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -15,12 +18,15 @@ public class OrderEntity {
     @Column(name = "order_id")
     private Long id;
 
-    private Date orderDate;
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
 
+    @Column(name = "status")
     private String orderStatus;
 
     private String note;
 
+    @Column(name = "payment_method")
     private PaymentMethodEnum paymentMethod;
 
     private boolean isAccept;
@@ -46,13 +52,13 @@ public class OrderEntity {
         return this;
     }
 
-    public Date getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
-    public OrderEntity setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-        return this;
+    public void setOrderDate(String formattedDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        this.orderDate = LocalDateTime.parse(formattedDateTime, formatter);
     }
 
     public String getOrderStatus() {

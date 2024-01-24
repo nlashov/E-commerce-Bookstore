@@ -52,7 +52,7 @@ public class AdminController {
             Page<BookSummaryDTO> allUnavailableBooks = bookService.getUnavailableBooks(pageable);
             model.addAttribute("books", allUnavailableBooks);
         }
-        return "books-unavailable";
+        return "book/books-unavailable";
     }
 
     @GetMapping("/search")
@@ -69,7 +69,7 @@ public class AdminController {
             model.addAttribute(
                     "org.springframework.validation.BindingResult.searchBookModel",
                     bindingResult);
-            return "books-search";
+            return "book/books-search";
         }
 
         if (!model.containsAttribute("searchBookModel")) {
@@ -79,7 +79,7 @@ public class AdminController {
         if (!searchBookDTO.isEmpty()) {
             model.addAttribute("books", bookService.searchBooks(searchBookDTO, pageable));
         }
-        return "books-unavailable";
+        return "book/books-unavailable";
     }
 
 }

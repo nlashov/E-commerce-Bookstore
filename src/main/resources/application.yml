@@ -21,15 +21,16 @@ Nutso:
   default.admin.pass: 12345
   remember.me.key: 12345
 
-#logging:
-#  level:
-#    org.hibernate.SQL: DEBUG
-#    org.hibernate.orm.jdbc.bind: TRACE
-#    org.springframework.security: TRACE
+logging:
+  level:
+    #    org.hibernate.SQL: DEBUG
+    #    org.hibernate.orm.jdbc.bind: TRACE
+    #    org.springframework.security: TRACE
+    org.springramework.mail.javamail: DEBUG
 
 
 mail:
-  Nutso: "Nutso@test.com"
+  admin: "admin@test.com"
   host: localhost
   port: 1025
   username: ${MAIL_USER:Nutso}

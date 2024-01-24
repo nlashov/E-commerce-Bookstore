@@ -15,13 +15,14 @@ public record BookDetailDTO(
         CategoryEnum category,
         Integer year,
         String imageUrl,
-        Boolean isAvailable) {
+        Boolean isAvailable,
+        String publisher) {
 
 
     public BookDetailDTO(UUID uuid, String title, String author, double price,
                          BookConditionEnum bookCondition, String additionalInfo,
                          CategoryEnum category, Integer year, String imageUrl,
-                         Boolean isAvailable) {
+                         Boolean isAvailable, String publisher) {
         this.uuid = uuid;
         this.title = title;
         this.author = author;
@@ -32,6 +33,7 @@ public record BookDetailDTO(
         this.year = year;
         this.imageUrl = imageUrl;
         this.isAvailable = (isAvailable != null) ? isAvailable : Boolean.TRUE;
+        this.publisher = publisher;
     }
 
     public String summary() {

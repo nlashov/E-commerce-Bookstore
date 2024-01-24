@@ -18,6 +18,8 @@ public class AddressEntity {
 
     private String zipCode;
 
+    private String phoneNumber;
+
     public Long getId() {
         return id;
     }
@@ -60,6 +62,15 @@ public class AddressEntity {
 
     public AddressEntity setZipCode(String zipCode) {
         this.zipCode = zipCode;
+        return this;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public AddressEntity setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
         return this;
     }
 }

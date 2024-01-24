@@ -133,12 +133,33 @@ public class CartServiceImpl implements CartService {
         cartRepository.deleteById(id);
     }
 
+    @Override
+    public Set<CartItemEntity> getCartItemsForUser(UserEntity user) {
+        CartEntity cart = user.getCart();
+
+        if (cart != null) {
+            Set<CartItemEntity> cartItems = cart.getCartItems();
+            System.out.println("Cart items for user: " + cartItems); // Add this line for debugging
+            return cartItems;
+        } else {
+            System.out.println("User's cart is null. Creating a new cart."); // Add this line for debugging
+
+            // Create an empty cart for the user if it doesn't exist
+            cart = new CartEntity();
+            user.setCart(cart);
+            userRepository.save(user); // Save the user with the new cart
+            return Collections.emptySet(); // or return null if you prefer
+        }
+    }
+
     private CartItemEntity findCartItem(Set<CartItemEntity> cartItems, Long bookId) {
         return cartItems.stream()
                 .filter(item -> Objects.equals(item.getBook().getId(), bookId))
                 .findFirst()
                 .orElse(null);
     }
+
+
 
     public boolean isBookAlreadyInAnyCart(BookEntity book) {
         List<UserEntity> allUsers = userRepository.findAll();
@@ -152,6 +173,8 @@ public class CartServiceImpl implements CartService {
 
         return false; // Book is not in any cart
     }
+
+
 
     private boolean isBookInCart(CartEntity cart, BookEntity book) {
         Set<CartItemEntity> cartItems = cart.getCartItems();
@@ -173,11 +196,12 @@ public class CartServiceImpl implements CartService {
                 .sum();
     }
 
-    private int calculateTotalItems(Set<CartItemEntity> cartItems) {
+    public int calculateTotalItems(Set<CartItemEntity> cartItems) {
         return cartItems.stream()
                 .mapToInt(CartItemEntity::getQuantity)
                 .sum();
     }
+
 
     @Transactional
     private void scheduleCartExpiryTask(CartEntity cart) {

@@ -39,20 +39,25 @@
                 <td>
                     <form th:action="@{/remove-from-cart}" th:method="POST">
                         <input type="hidden" name="uuid" th:value="${cartItem.book.uuid}">
-                        <button type="submit" name="action" value="delete" title="Delete" class="btn btn-warning">Delete</button>
+                        <button type="submit" name="action" value="delete" title="Изтрий" class="btn btn-warning">Delete</button>
                     </form>
                 </td>
             </tr>
             </tbody>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th class="font-weight-bold" th:text="${cart.totalItems}"></th>
+                <th class="font-weight-bold" th:text="${cart.totalPrice} + 'лв.'"></th>
+            </tr>
         </table>
 
         <!-- Display totalAmount and totalItems -->
         <div class="cart-actions">
-            <p>Total Items: <span th:text="${cart.totalItems}"></span></p>
-            <p>Total Amount: <span th:text="${cart.totalPrice}"></span> лв.</p>
             <!-- Proceed to checkout button -->
             <a th:href="@{/checkout}">
-                <button class="checkout-btn">Proceed to Checkout</button>
+                <button class="checkout-btn">Завърши поръчката</button>
             </a>
         </div>
 

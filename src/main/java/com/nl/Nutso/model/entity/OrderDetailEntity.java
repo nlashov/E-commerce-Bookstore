@@ -19,7 +19,7 @@ public class OrderDetailEntity {
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     private OrderEntity order;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", referencedColumnName = "book_id")
     private BookEntity book;
 

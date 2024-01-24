@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -41,7 +42,7 @@ public class BookController {
             model.addAttribute("addBookDTO", AddBookDTO.empty());
         }
 
-        return "book-add";
+        return "book/book-add";
     }
 
     @PostMapping("/add")
@@ -64,16 +65,17 @@ public class BookController {
     }
 
     @GetMapping("/{uuid}")
-    public String details(@PathVariable("uuid") UUID uuid,
+    public String getBookDetails(@PathVariable("uuid") UUID uuid,
                           Model model) {
 
-        BookDetailDTO bookDetailDTO = bookService
-                .getBookDetail(uuid)
+        BookDetailDTO bookDetailDTO = bookService.getBookDetail(uuid)
                 .orElseThrow(() -> new ObjectNotFoundException("Book with id " + uuid + " not found!"));
 
+        List<BookDetailDTO> relatedBooks = bookService.getRelatedBooksByCategory(bookDetailDTO);
         model.addAttribute("book", bookDetailDTO);
+        model.addAttribute("relatedBooks", relatedBooks);
 
-        return "book-details";
+        return "book/book-details";
     }
 
     @GetMapping("{uuid}/edit")
@@ -86,7 +88,7 @@ public class BookController {
 
         model.addAttribute("book", bookDetailDTO);
 
-        return "book-edit";
+        return "book/book-edit";
     }
 
     @PatchMapping("/{uuid}/edit")
@@ -132,7 +134,7 @@ public class BookController {
             Page<BookSummaryDTO> allAvailableBooks = bookService.getAvailableBooks(pageable);
             model.addAttribute("books", allAvailableBooks);
         }
-        return "books";
+        return "book/books";
     }
 
 
@@ -161,7 +163,7 @@ public class BookController {
         if (!searchBookDTO.isEmpty()) {
             model.addAttribute("books", bookService.searchBooks(searchBookDTO, pageable));
         }
-        return "books";
+        return "book/books";
     }
 
 

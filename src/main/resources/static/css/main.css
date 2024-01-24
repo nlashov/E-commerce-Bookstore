@@ -32,7 +32,8 @@ body {
 .cart-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+
+        justify-content: center; /* Center items vertically */
     margin: auto;
     margin-top: 105px;
     width: 60%;
@@ -40,11 +41,12 @@ body {
     padding: 20px;
     border-radius: 10px;
     color: #000000; /* Black text color */
+        margin-bottom: 100px; /* Add some margin at the bottom */
 }
 
 .table {
     color: white;
-    width: 80%;
+    width: 100%;
     background-color: #ffffff; /* White background color */
     border: 1px solid #dee2e6; /* Gray border */
     border-radius: 5px;

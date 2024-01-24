@@ -44,13 +44,13 @@ public class CartController {
 
         CartEntity cart = customer.getCart();
         if(cart == null){
-            return "cart";
+            return "order/cart";
         }
 
         httpSession.setAttribute("totalItems", cart.getTotalItems());
         model.addAttribute("subTotal", cart.getTotalPrice());
         model.addAttribute("cart", cart);
-        return "cart";
+        return "order/cart";
     }
 
 

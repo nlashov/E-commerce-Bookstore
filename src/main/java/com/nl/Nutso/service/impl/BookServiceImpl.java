@@ -13,8 +13,11 @@ import com.nl.Nutso.service.exception.ObjectNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -69,7 +72,6 @@ public class BookServiceImpl implements BookService {
     }
 
 
-
     @Override
     public Page<BookSummaryDTO> searchBooks(SearchBookDTO searchBookDTO, Pageable pageable) {
         Page<BookEntity> booksPage = bookRepository.findAll(BookSpecification.withTitleAndAuthor(searchBookDTO), pageable);
@@ -114,8 +116,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<BookSummaryDTO> getRelatedBooks(Long categoryId, Pageable pageable) {
-        return bookRepository.findRelatedBooks(categoryId, pageable).map(BookServiceImpl::mapAsSummary);
+    public List<BookDetailDTO> getRelatedBooksByCategory(BookDetailDTO currentBook) {
+        // Fetch books from the same category, excluding the current book
+        return bookRepository.findByCategoryAndUuidNot(currentBook.category(), currentBook.uuid())
+                .stream()
+                .map(BookServiceImpl::mapAsDetail) // Assuming you have a mapper for Book to BookDetailDTO
+                .collect(Collectors.toList());
     }
 
     public static BookEntity map(AddBookDTO addBookDTO) {
@@ -144,7 +150,8 @@ public class BookServiceImpl implements BookService {
                 bookEntity.getCategory(),
                 bookEntity.getYear(),
                 bookEntity.getImageUrl(),
-                bookEntity.isAvailable());
+                bookEntity.isAvailable(),
+                bookEntity.getPublisher());
 
     }
 

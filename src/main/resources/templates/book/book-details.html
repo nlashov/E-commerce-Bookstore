@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar}"></div>
+
+<div class="container mt-5">
+    <h2 class="text-center text-white">Подробна информация за книгата</h2>
+
+    <div th:object="${book}" class="row mt-3">
+        <!-- Book Image and Details -->
+        <div class="col-md-6">
+            <div class="card">
+                <img th:src="*{imageUrl}" class="card-img-top" alt="Book Image">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title" th:text="*{title}"></h3>
+                    <ul class="list-group list-group-flush">
+                        <!-- Book Details -->
+                        <li class="list-group-item"><span>• Автор:</span> <span th:text="*{author}"></span></li>
+                        <li class="list-group-item"><span>• Цена:</span> <span th:text="*{price}"></span></li>
+                        <li class="list-group-item"><span>• Година:</span> <span th:text="*{year}"></span></li>
+                        <li class="list-group-item"><span>• Категория:</span> <span th:text="*{category.getDisplayName()}">Category</span></li>
+                        <li class="list-group-item"><span>• Състояние:</span> <span th:text="*{bookCondition.getDisplayName()}">Condition</span></li>
+                        <li class="list-group-item"><span>• Допълнителна информация:</span> <span th:text="*{additionalInfo}">add Info</span></li>
+                        <li class="list-group-item"><span>• Наличност:</span> <span th:text="${book.isAvailable} ? 'В наличност' : 'Няма в наличност'">isAvailable</span></li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center d-flex justify-content-between">
+                    <form sec:authorize="hasRole('ADMIN')" th:method="POST" th:action="@{/books/{bookUUID}(bookUUID=*{uuid})}">
+                        <!-- Show "Деактивирай" button if book is available -->
+                        <input th:if="${book.isAvailable}" type="submit" name="action" value="Деактивирай" class="btn btn-danger"/>
+                        <!-- Show "Активирай" button if book is not available -->
+                        <input th:unless="${book.isAvailable}" type="submit" name="action" value="Активирай" class="btn btn-success"/>
+                    </form>
+                    <form sec:authorize="hasRole('ADMIN')" th:method="GET" th:action="@{/books/{bookUUID}/edit(bookUUID=*{uuid})}">
+                        <input type="submit" value="Промени" class="btn btn-primary"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Items Section -->
+    <div class="row mt-5">
+        <h3 class="text-center text-white mb-3">Други книги от същата категория</h3>
+
+        <!-- Display up to 9 related books in a grid -->
+        <div class="col-md-12">
+            <div class="row">
+
+                <!-- Iterate over related books and display them in the grid -->
+                <div th:each="relatedBook, iterStat : ${relatedBooks}" class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="row no-gutters">
+                            <!-- Card content for the related book -->
+                            <div class="col-md-4">
+                                <a th:href="@{/books/{bookUUID}(bookUUID=*{relatedBook.uuid})}">
+                                    <img class="book-image" th:src="*{relatedBook.imageUrl}" alt="no-image.jpg">
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${relatedBook.title}"></h5>
+                                    <p class="card-text" th:text="${relatedBook.author}"></p>
+                                    <!-- Add other details as needed -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+
+</html>

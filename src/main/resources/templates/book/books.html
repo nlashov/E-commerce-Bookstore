@@ -27,13 +27,15 @@
         <!-- Main Content -->
         <div class="col-md-10">
             <!-- Search Form -->
-            <div class="search-form col-md-6 offset-md-3 text-center">
+            <div class="search-form col-md-4 offset-md-4 text-center">
                 <form th:method="GET" th:action="@{/books/search}" th:object="${searchBookModel}">
                     <div class="input-group">
                         <input th:field="*{query}" class="form-control" type="search"
-                               placeholder="Търси по заглавие или автор" aria-label="Search" id="query">
+                               placeholder="Търси по заглавие или автор" aria-label="Search" id="query" required>
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="submit"></button>
+                            <button class="btn btn-outline-secondary" type="submit">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -80,7 +82,7 @@
 
     </div>
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center offset-md-2">
         <nav>
             <ul class="pagination">
                 <!-- Page Numbers -->
