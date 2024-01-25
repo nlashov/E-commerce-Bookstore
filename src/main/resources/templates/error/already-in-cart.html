@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head}">
+</head>
+
+<body>
+
+<div>
+    <nav th:replace="~{fragments/navbar}"></nav>
+</div>
+
+<div class="container-fluid">
+    <h5 class="text-center text-white mt-5">Съжаляваме!</h5>
+    <h5 class="text-center text-white mt-5">Някой вече е добавил книгата към своята количка. Можеш да опиташ отново по-късно в случай, че се е отказал да завърши поръчката си.</h5>
+    <br/>
+    <center>
+        <div>
+            <img th:src="@{/images/sold-out.jpeg}" alt="Грешка 500" class="img-fluid error-image" style="max-width: 700px;">
+        </div>
+        <button onclick="window.location.href='/'" class="btn btn-primary  mt-3">Обратно към заглавна страница</button>
+    </center>
+</div>
+
+<div>
+    <footer> </footer>
+</div>
+
+</body>
+</html>

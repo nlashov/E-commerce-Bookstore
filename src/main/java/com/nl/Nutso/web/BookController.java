@@ -10,6 +10,7 @@ import com.nl.Nutso.service.exception.ObjectNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,7 +47,7 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public String add(
+    public String addNewBook(
             @Valid AddBookDTO addBookDTO,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
@@ -57,7 +58,6 @@ public class BookController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBookDTO", bindingResult);
             return "redirect:/books/add";
         }
-
 
         UUID newBookUUID = bookService.addBook(addBookDTO);
 
@@ -114,13 +114,14 @@ public class BookController {
 
 
     @GetMapping("/all")
-    public String all(Model model,
-                      @PageableDefault(
+    public String showAllBooks(Model model,
+                               @PageableDefault(
                               size = 10,
-                              sort = "title"
-                      ) Pageable pageable,
-                      @ModelAttribute("searchBookModel") SearchBookDTO searchBookDTO,
-                      @RequestParam(name = "category", required = false) CategoryEnum category) {
+                              sort = "price",
+                              direction = Sort.Direction.DESC
+                               ) Pageable pageable,
+                               @ModelAttribute("searchBookModel") SearchBookDTO searchBookDTO,
+                               @RequestParam(name = "category", required = false) CategoryEnum category) {
 
         if (searchBookDTO != null && !searchBookDTO.isEmpty()) {
             Page<BookSummaryDTO> searchResults = bookService.searchBooks(searchBookDTO, pageable);
@@ -134,6 +135,7 @@ public class BookController {
             Page<BookSummaryDTO> allAvailableBooks = bookService.getAvailableBooks(pageable);
             model.addAttribute("books", allAvailableBooks);
         }
+
         return "book/books";
     }
 

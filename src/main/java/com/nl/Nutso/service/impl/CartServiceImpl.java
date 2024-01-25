@@ -51,7 +51,6 @@ public class CartServiceImpl implements CartService {
         }
 
         if (isBookAlreadyInAnyCart(book)) {
-            // Handle accordingly, e.g., return a message or throw a custom exception
             throw new BookAlreadyInCartException("Book is already in another user's cart");
         }
 
@@ -138,17 +137,12 @@ public class CartServiceImpl implements CartService {
         CartEntity cart = user.getCart();
 
         if (cart != null) {
-            Set<CartItemEntity> cartItems = cart.getCartItems();
-            System.out.println("Cart items for user: " + cartItems); // Add this line for debugging
-            return cartItems;
+            return cart.getCartItems();
         } else {
-            System.out.println("User's cart is null. Creating a new cart."); // Add this line for debugging
-
-            // Create an empty cart for the user if it doesn't exist
             cart = new CartEntity();
             user.setCart(cart);
-            userRepository.save(user); // Save the user with the new cart
-            return Collections.emptySet(); // or return null if you prefer
+            userRepository.save(user);
+            return Collections.emptySet();
         }
     }
 
@@ -182,12 +176,11 @@ public class CartServiceImpl implements CartService {
         if (cartItems != null) {
             for (CartItemEntity cartItem : cartItems) {
                 if (cartItem.getBook().equals(book)) {
-                    return true; // Book is found in this cart
+                    return true;
                 }
             }
         }
-
-        return false; // Book is not in this cart
+        return false;
     }
 
     private double calculateTotalPrice(Set<CartItemEntity> cartItems) {

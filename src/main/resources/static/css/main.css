@@ -25,9 +25,9 @@ body {
     padding-right: 70px;
     border-radius: 8px;
     border-color: white;
-
-
 }
+
+
 
 .cart-container {
     display: flex;
@@ -61,6 +61,12 @@ body {
     flex-direction: column;
     height: 100%; /* Ensure the container takes full height */
 }
+
+
+.error-image {
+    border: 5px solid;
+    border-color: white;
+    }
 
 .table th, .table td {
             padding: 12px;
@@ -229,6 +235,14 @@ td, th {
 .book-image {
     width:180px;
     height:270px;
+    object-fit: cover;
+    border: 2px solid white;
+    border-radius: 6px;
+}
+
+.related-book-image {
+    width:100%
+    height: auto;
     object-fit: cover;
     border: 2px solid white;
     border-radius: 6px;

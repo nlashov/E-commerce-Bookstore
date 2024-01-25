@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.UUID;
@@ -58,7 +59,8 @@ public class CartController {
     public String addItemToCart(
             @RequestParam("uuid") UUID bookUuid,
             Principal principal,
-            HttpServletRequest request) {
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
 
         if (principal == null) {
             return "redirect:/login";
@@ -66,10 +68,14 @@ public class CartController {
         BookEntity book = bookService.getBookByUuid(bookUuid);
         String userEmail = principal.getName();
         UserEntity customer = userService.getUserByEmail(userEmail);
-        //TODO check if the book is already added in another cart and set a timer for the session
+        if (cartService.isBookAlreadyInAnyCart(book)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Book is already in another user's cart");
+            return "redirect:/error/already-in-cart";
+        }
 
         CartEntity cart = cartService.addItemToCart(customer, book);
         return "redirect:" + request.getHeader("Referer");
+
     }
 
     @PostMapping("/remove-from-cart")

@@ -75,7 +75,7 @@
                 <!-- Page Numbers -->
                 <li th:each="pageNumber : ${#numbers.sequence(0, books.totalPages - 1)}" class="page-item"
                     th:classappend="${pageNumber == books.number ? 'active' : ''}">
-                    <a th:href="@{/books/all(size=${books.getSize()},page=${pageNumber})}" class="page-link"
+                    <a th:href="@{/books/books-unavailable(size=${books.getSize()},page=${pageNumber})}" class="page-link"
                        href="#" th:text="${pageNumber + 1}">1</a>
                 </li>
             </ul>

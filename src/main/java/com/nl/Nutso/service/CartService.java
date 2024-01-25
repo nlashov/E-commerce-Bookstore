@@ -16,4 +16,5 @@ public interface CartService {
     void deleteCartById(Long id);
     Set<CartItemEntity> getCartItemsForUser(UserEntity user);
     int calculateTotalItems(Set<CartItemEntity> cartItems);
+    boolean isBookAlreadyInAnyCart(BookEntity book);
 }
