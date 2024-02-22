@@ -4,12 +4,9 @@ import com.nl.Nutso.model.enums.BookConditionEnum;
 import com.nl.Nutso.model.enums.CategoryEnum;
 import com.nl.Nutso.model.validation.YearNotInFuture;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.JdbcTypeCode;
-
-import java.math.BigDecimal;
 import java.sql.Types;
 import java.util.UUID;
 
@@ -64,6 +61,8 @@ public class BookEntity {
 
     @NotEmpty
     private String imageUrl;
+
+
 
     public UUID getUuid() {
         return uuid;

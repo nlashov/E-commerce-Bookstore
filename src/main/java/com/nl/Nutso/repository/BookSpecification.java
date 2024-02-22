@@ -11,20 +11,16 @@ import org.springframework.data.jpa.domain.Specification;
 public class BookSpecification {
 
     public static Specification<BookEntity> withTitleAndAuthor(SearchBookDTO searchBookDTO) {
-        return new Specification<BookEntity>() {
-            @Override
-            public Predicate toPredicate(Root<BookEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                Predicate p = criteriaBuilder.conjunction();
-
-                if (searchBookDTO.query() != null && !searchBookDTO.query().trim().isEmpty()) {
-                    String queryString = "%" + searchBookDTO.query().toLowerCase() + "%";
-                    p = criteriaBuilder.or(
-                            criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), queryString),
-                            criteriaBuilder.like(criteriaBuilder.lower(root.get("author")), queryString)
-                    );
-                }
-                return p;
+        return (root, query, criteriaBuilder) -> {
+            Predicate p = criteriaBuilder.conjunction();
+            if (searchBookDTO.query() != null && !searchBookDTO.query().trim().isEmpty()) {
+                String queryString = "%" + searchBookDTO.query().toLowerCase() + "%";
+                p = criteriaBuilder.or(
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), queryString),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("author")), queryString)
+                );
             }
+            return p;
         };
     }
 }

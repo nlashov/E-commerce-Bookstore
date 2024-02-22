@@ -1,14 +1,16 @@
 package com.nl.Nutso.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.Instant;
 
 @Entity
 @Table(name = "user_activation_codes")
-public class UserActivationCodeEntity extends BaseEntity{
+public class UserActivationCodeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String activationCode;
 

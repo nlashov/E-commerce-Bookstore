@@ -4,8 +4,7 @@ import org.springframework.context.ApplicationEvent;
 
 public class OrderPlacedEvent extends ApplicationEvent {
 
-    private String orderDetails;
-
+    private final String orderDetails;
 
     public OrderPlacedEvent(Object source, String orderDetails) {
         super(source);

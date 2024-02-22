@@ -71,12 +71,10 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(book);
     }
 
-
     @Override
     public Page<BookSummaryDTO> searchBooks(SearchBookDTO searchBookDTO, Pageable pageable) {
-        Page<BookEntity> booksPage = bookRepository.findAll(BookSpecification.withTitleAndAuthor(searchBookDTO), pageable);
-
-        return booksPage.map(BookServiceImpl::mapAsSummary);
+        return bookRepository.findAll(BookSpecification.withTitleAndAuthor(searchBookDTO), pageable)
+                .map(BookServiceImpl::mapAsSummary);
     }
 
     @Override
@@ -87,11 +85,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void updateBook(UUID uuid, BookDetailDTO bookDetailDTO) {
-        // Fetch the book entity from the repository
+
         BookEntity book = bookRepository.findBookByUuid(uuid)
                 .orElseThrow(() -> new ObjectNotFoundException("Book with id " + uuid + " not found!"));
 
-        // Update the book entity with data from the BookEditDTO
         book.setTitle(bookDetailDTO.title());
         book.setAuthor(bookDetailDTO.author());
         book.setPrice(bookDetailDTO.price());
@@ -117,10 +114,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDetailDTO> getRelatedBooksByCategory(BookDetailDTO currentBook) {
-        // Fetch books from the same category, excluding the current book
-        return bookRepository.findByCategoryAndUuidNot(currentBook.category(), currentBook.uuid())
+        return bookRepository
+                .findByCategoryAndUuidNot(currentBook.category(), currentBook.uuid())
                 .stream()
-                .map(BookServiceImpl::mapAsDetail) // Assuming you have a mapper for Book to BookDetailDTO
+                .map(BookServiceImpl::mapAsDetail)
                 .collect(Collectors.toList());
     }
 
@@ -137,7 +134,6 @@ public class BookServiceImpl implements BookService {
                 .setImageUrl(addBookDTO.imageUrl())
                 .setAvailable(true);
     }
-
 
     private static BookDetailDTO mapAsDetail(BookEntity bookEntity) {
         return new BookDetailDTO(
@@ -164,6 +160,4 @@ public class BookServiceImpl implements BookService {
                 bookEntity.getImageUrl(),
                 bookEntity.isAvailable());
     }
-
-
 }

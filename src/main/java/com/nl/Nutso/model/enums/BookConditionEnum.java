@@ -3,7 +3,7 @@ package com.nl.Nutso.model.enums;
 public enum BookConditionEnum {
     BAD("Захабено"),
     GOOD("Добро"),
-    VERYGOOD("Много добро"),
+    VERY_GOOD("Много добро"),
     EXCELLENT("Отлично");
 
     private final String displayName;
